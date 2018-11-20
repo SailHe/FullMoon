@@ -53,10 +53,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../myLib/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../$(intDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DSAUtilityExtension.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -166,7 +169,6 @@
     <ClInclude Include="src\Shape.h" />
     <ClInclude Include="src\Sprite.h" />
     <ClInclude Include="src\stdafx.h" />
-    <ClInclude Include="src\stdafx_new.h" />
     <ClInclude Include="src\TimeClock.h" />
     <ClInclude Include="src\Tips.h" />
   </ItemGroup>

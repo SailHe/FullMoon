@@ -13,8 +13,8 @@ class AnimationManager{
 	GP Graphics *graphics_ = nullptr;//独立画板 由给予该指针的对象管理
 	
 
-	vector<vector<GP Bitmap *>> animation;/*位图组 备用词surfaceTexture(表面纹理)*/
-	vector<pair<size_t, size_t>> indexF;/*当前帧/最大帧frame index*/
+	ArrayList<ArrayList<GP Bitmap *>> animation;/*位图组 备用词surfaceTexture(表面纹理)*/
+	ArrayList<std::pair<size_t, size_t>> indexF;/*当前帧/最大帧frame index*/
 	//释放位图组内的所有位图 并置空 位图组大小不变(已使用的size置为0)
 	void deleteAnimation(){
 		FOR(i, 0, animation.size()){
@@ -76,14 +76,14 @@ public:
 	//右值赋值 :析构左手边位图 将左右手位图指针交换
 	AnimationManager& operator=(AnimationManager &&rvalue){
 		indexF = std::move(rvalue.indexF);
-		swap(graphics_, rvalue.graphics_);
+		std::swap(graphics_, rvalue.graphics_);
 
 		deleteAnimation();
 		animation.resize(rvalue.animation.size());
 		FOR(i, 0, rvalue.animation.size()){
 			animation[i].resize(rvalue.animation[i].size());
 			FOR(j, 0, rvalue.animation[i].size()){
-				swap(animation[i][j], rvalue.animation[i][j]);
+				std::swap(animation[i][j], rvalue.animation[i][j]);
 				//裂图调用的Clone方法不允许处理const 不允许拷贝
 				//partitionBitmap(0, 0, rhs.animation[i][j]->GetWidth(), rhs.animation[i][j]->GetHeight(), animation[i], rhs.animation[i][j]);
 				//animation[i][j] = new GP Bitmap(*rhs.animation[i][j]);// 不允许赋值
@@ -180,7 +180,7 @@ public:
 		, int loadFX = -1, int loadFY = -1
 		, STEP stepDir = STEP_X_AXIS
 		, WCHAR const *alias = nullptr){
-		static map<GP Status, string> statusMap = {
+		static std::map<GP Status, std::string> statusMap = {
 			{ Ok, "OK" },
 			{ GenericError, "GenericError" },
 			{ InvalidParameter, "InvalidParameter" },
@@ -202,9 +202,9 @@ public:
 			{ GdiplusNotInitialized, "GdiplusNotInitialized" } };
 		wcscpy_s(res + 4, Constant::BUFFER_MAX_BIT - 4, resPath);
 		int rSub = loadResource(startRowFrame, startColFrame, totalFrameXAxis, totalFrameYAxis, loadFX, loadFY, stepDir);
-		string errMesg = statusMap[pastStatus].c_str();
+		std::string errMesg = statusMap[pastStatus].c_str();
 		assert(rSub >= 0);
-		static wstring name;
+		static std::wstring name;
 		if (alias == nullptr){
 			int len = lstrlenW(res);
 			int rDotIndex = len;
@@ -213,13 +213,13 @@ public:
 					rDotIndex = i;
 				}
 				if (res[i] == '\\'){
-					name = wstring(res + i + 1, res + rDotIndex);
+					name = std::wstring(res + i + 1, res + rDotIndex);
 					break;
 				}
 			}
 		}
 		else{
-			name = wstring(alias);
+			name = std::wstring(alias);
 		}
 		if (DEBUG){
 			assert(originSubTable.find(name) == originSubTable.end());
@@ -230,7 +230,7 @@ public:
 
 	//别名加载(需使用 图片别名alias获取源rSub)
 	int reLoad(
-		PTCHAR resPath, wstring const &alias
+		PTCHAR resPath, std::wstring const &alias
 		, int totalFrameXAxis = 1, int totalFrameYAxis = 1
 		, int startRowFrame = 0, int startColFrame = 0
 		, int loadFX = -1, int loadFY = -1
@@ -246,7 +246,7 @@ public:
 private:
 	/*截取图像的某一部分 (截取区域, 存储容器(push_back), 源位图)*/
 	static void partitionBitmap(int x, int y, int Width, int Height
-		, vector<GP Bitmap*> &animation, GP Bitmap &imageRes){
+		, ArrayList<GP Bitmap*> &animation, GP Bitmap &imageRes){
 
 		static RectF block = RectF();
 		block.X = (REAL)x, block.Y = (REAL)y, block.Width = (REAL)Width, block.Height = (REAL)Height;
@@ -279,9 +279,9 @@ private:
 		, STEP stepDir = STEP_X_AXIS){
 
 		static int width = 0, height = 0;
-		static wstring pastRes;
+		static std::wstring pastRes;
 		//裂图源位图
-		static shared_ptr<Bitmap> imageResource;
+		static std::shared_ptr<Bitmap> imageResource;
 		if (pastRes == res){
 			// do nothing
 		}
@@ -348,8 +348,8 @@ private:
 		return oldSize;
 	}
 
-	//map<wstring, SkId>索引表 <name id>
-	map<wstring, SkId> originSubTable;
+	//std::map<std::wstring, SkId>索引表 <name id>
+	std::map<std::wstring, SkId> originSubTable;
 	//放大系数(或是缩小) 没有使用
 	static GP SizeF enlargeProportion;
 };
@@ -390,10 +390,10 @@ public:
 
 	/*********************************基本的图形绘制方法****************************/
 	void drawPoint(GP Point const &p){
-		//esayX绘制像素点
+		// esayX绘制像素点
 		// putpixel(p.X, p.Y, BLACK);
 		// @TODO
-		getchar();
+		drawCircle(p, 1);
 	}
 	void drawLine(GP Point const &o, GP Point const &e){
 		messenger.getGraphics()->DrawLine(messenger.pen(255, 128, 0, 0), o, e);
@@ -516,7 +516,7 @@ public:
 	/*比值条*/
 	void speValBar(int value, int fullValue, GP Color color);
 	/*将一个比值文本缓冲到 消息缓冲区*/
-	void specificValueToBuffer(int value, int fullValue, wstring  const &str = L"");
+	void specificValueToBuffer(int value, int fullValue, std::wstring  const &str = L"");
 	//绘制菜单背景
 	void drawMenuBack(){
 		static int rSub = messenger.getOriginRowsSub(_T("statusBack"));
@@ -534,9 +534,9 @@ public:
 		text(bottonName, buttonBackAreaTemp, 15, BLACK_);
 	}
 	/*物品罗列 在区域内罗列背包中的所有物品 将有物品的格子传入ItemsBox中*/
-	void inventoryTabs(Package const &bag, vector<Sprite> &ItemsBox);
+	void inventoryTabs(Package const &bag, ArrayList<Sprite> &ItemsBox);
 	//在area处展示一个状态值(name: status/fullstatus)
-	void drawStatusBar(size_t left, size_t top, wstring const &name, int statusValue, int statusFullValue, GP Color color = BLACK_){
+	void drawStatusBar(size_t left, size_t top, std::wstring const &name, int statusValue, int statusFullValue, GP Color color = BLACK_){
 		specificValueToBuffer(statusValue, statusFullValue, name);
 		//字体大小根据状态框背景自适应
 		text(messageBuffer, left + (int)(Constant::mainCanvasSize.Width*0.005), top, getWidth() / 24, color);

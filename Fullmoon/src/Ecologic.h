@@ -3,8 +3,8 @@
 #include "Atlas.h"
 #include "CollisionEvent.h"
 //群体类
-using Colony = map<int, CollisionBox>;
-using BiologyManager = shared_ptr<Biology>;
+using Colony = std::map<int, CollisionBox>;
+using BiologyManager = std::shared_ptr<Biology>;
 /*
 生态区域 :剧本 掉落物 群体 具有通信, 渲染功能
 在构造一个生态后应当自动渲染 然后提供剧请通信和物品通信的接口
@@ -40,9 +40,9 @@ public:
 			if (--diededBag.back().second <= 0)
 				diededBag.pop_back();
 			//此时间戳用于掉落物实体与碰撞盒之间的联系
-			dropItem.emplace_back(shared_ptr<Item>(new Item(shared_ptr<Timestamp>(new Timestamp()), location, id)));
+			dropItem.emplace_back(std::shared_ptr<Item>(new Item(std::shared_ptr<Timestamp>(new Timestamp()), location, id)));
 			//将新生成的事件的副本作为一个碰撞事件加入碰撞树(时间戳一致)
-			sendImpactEvent(shared_ptr<CollisionBox>(dropItem.back()));
+			sendImpactEvent(std::shared_ptr<CollisionBox>(dropItem.back()));
 		}
 	}
 	//绘制所有掉落物(若发现已失效物品将会清除)
@@ -61,7 +61,7 @@ public:
 	WindowSprite &sendMessage(){
 		return ecoregionWindow;
 	}
-	shared_ptr<Sprite const> getBody(){
+	std::shared_ptr<Sprite const> getBody(){
 		return ecoregionMapBody;
 	}
 	//装载数据(屏幕显示区域的Size与摄像机相同)
@@ -328,7 +328,7 @@ public:
 		//entrance.setCentre({ 32 + 5, 24 + 5 });
 		exit.setSize(maper.getWidthA(transferSub), maper.getHeightA(transferSub));
 		//exit.setCentre({ ecoregionMapBody->getWidth() - 32 - 5, ecoregionMapBody->getHeight() - 24 - 25 });
-		shared_ptr<TransmissionEvent> left, right;
+		std::shared_ptr<TransmissionEvent> left, right;
 		left.reset(new TransmissionEvent(timestamp, 1, 0));
 		right.reset(new TransmissionEvent(timestamp, 1, 1));
 		left->setCircle(entrance.getCentre(), entrance.getRadius());
@@ -380,7 +380,7 @@ public:
 	bool pickUpFollow(Sprite const &body, Sprite const &target, ShortestPathResult &result){
 		static Graph &parityGraph = renderData.parityGraph();
 		static SubTwain limitSub(ecoregionMapBody->rowsLimit(), ecoregionMapBody->colsLimit());
-		vector<int> &dist = result.dist, &path = result.path;
+		ArrayList<int> &dist = result.dist, &path = result.path;
 
 		//@TODO 加入体型的判断(仅仅是一个点有可能体型无法通过)
 		auto startRect = body.getRect();
@@ -434,18 +434,18 @@ private:
 	//创建属于生态Be的大小为bioCount的生物群 并传入玩家(若玩家为空 那么将创建并默认将该玩家置于此生态内)
 	void createColony(size_t bioCount);
 
-	shared_ptr<Timestamp> timestamp;
+	std::shared_ptr<Timestamp> timestamp;
 	//该生态的所有成员 <body信息, 实体(多态需要用指针)> 若在栈上申请过多内存会溢出 new是在堆上申请
-	map<int, BiologyManager> member;
+	std::map<int, BiologyManager> member;
 	static AnimationManager maper;//地图资源管理员实体
 	//生态区域大小
-	shared_ptr<Sprite const> ecoregionMapBody;
+	std::shared_ptr<Sprite const> ecoregionMapBody;
 	Colony colony;
 	//生态消息窗口
 	WindowSprite ecoregionWindow;
 	//每次使用后会手动关闭无需析构
 	FILE *fp = nullptr;
-	vector<shared_ptr<Item>> dropItem;// 物品实体集, 用于物品的显示(用掉落时间作为索引 只需要遍历, 增删操作 而且增删的时候不需要查重)
+	ArrayList<std::shared_ptr<Item>> dropItem;// 物品实体集, 用于物品的显示(用掉落时间作为索引 只需要遍历, 增删操作 而且增删的时候不需要查重)
 };
 
 

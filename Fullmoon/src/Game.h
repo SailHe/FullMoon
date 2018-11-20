@@ -2,9 +2,11 @@
 #define __Game_H
 
 #include "Ecosystem.h"
+#include "../myLib/extendspace.h"
 
 /*游戏控制器GameController*/
 class Game{
+	//using namespace std;
 public:
 	//构造->gameStart
 	Game(HDC hdc, GP Size const &winSize_)

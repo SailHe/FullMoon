@@ -14,7 +14,7 @@ class RenderManager{
 protected:
 	AvlTree<int> invalidIdTree;
 	//传送点列表
-	ArrayList<shared_ptr<CollisionBox>> transmissionList;
+	ArrayList<std::shared_ptr<CollisionBox>> transmissionList;
 	GP Size size_;
 	CoordinatesMap renderData;/*渲染地图主数据*/
 	//重载渲染地图(position)
@@ -178,8 +178,8 @@ private:
 	QuadTree impactTree;//碰撞树
 
 	// STL中不允许 const @see https://stackoverflow.com/questions/35764948/xmemory-errors-in-c-project-after-migrating-vs-2012-to-vs-2015
-	//list<shared_ptr<CollisionBox> const> eventRegistry;//事件注册表priority_queue<EventParcel>
-	list<shared_ptr<CollisionBox>> eventRegistry;//事件注册表priority_queue<EventParcel>
+	//LinkedList<std::shared_ptr<CollisionBox> const> eventRegistry;//事件注册表priority_queue<EventParcel>
+	LinkedList<std::shared_ptr<CollisionBox>> eventRegistry;//事件注册表priority_queue<EventParcel>
 	TimeClock refreshTime;
 	int detectionCount = 0;//探测开始时的事件数
 public:
@@ -205,14 +205,14 @@ public:
 	}
 
 	//发送一个需要碰撞检测的事件 发送成功返回true
-	bool sendImpactEvent(shared_ptr<CollisionBox> &eventObj){
+	bool sendImpactEvent(std::shared_ptr<CollisionBox> &eventObj){
 		return impactTree.insert(eventObj);
 	}
 
 	//碰撞检测 (检测对象的碰撞盒, 碰撞结果列表, valid筛选器)  预留方法 暂未使用
 	template<class Fun>
-	void impactDetection(shared_ptr<CollisionBox> const &key, 
-		list<shared_ptr<CollisionBox>> &impacters, Fun customFiltrate){
+	void impactDetection(std::shared_ptr<CollisionBox> const &key, 
+		LinkedList<std::shared_ptr<CollisionBox>> &impacters, Fun customFiltrate){
 		detectionCount = eventSize();
 		impactTree.retrieve(key, impacters);
 		//对可能的碰撞者进行碰撞检验
@@ -227,8 +227,8 @@ public:
 	}
 
 	//碰撞检测 (检测对象的碰撞盒, 所有的碰撞结果列表)
-	void impactDetection(shared_ptr<CollisionBox> const &key,
-		list<shared_ptr<CollisionBox>> &impacteResults){
+	void impactDetection(std::shared_ptr<CollisionBox> const &key,
+		LinkedList<std::shared_ptr<CollisionBox>> &impacteResults){
 		detectionCount = eventSize();
 		impactTree.retrieve(key, impacteResults);
 		//对可能的碰撞者进行碰撞检验
@@ -248,7 +248,7 @@ public:
 因为每张地图的掉落物要独立保留 所以没有合并到EventImpactManager 但是为什么不直接保留整个生态呢
 */
 class DropMap{/*掉落物品(position, id)*/
-	map<Sprite, int> dropItem;//因为要进行碰幢检测
+	std::map<Sprite, int> dropItem;//因为要进行碰幢检测
 	struct Item{
 		int id = 0;
 		Sprite body;
@@ -268,12 +268,12 @@ public:
 	virtual ~DropMap(){}
 	/*将背包中的物品装载到掉落地图 (物品Sprite)*/
 	void loadingItem(Sprite body, Package &diededBag){
-		diededBag.push_back(make_pair(116, 1));//固定掉落红心bug
+		diededBag.push_back(std::make_pair(116, 1));//固定掉落红心bug
 		while (!diededBag.empty()){
 			int id = diededBag.back().first;
 			if (--diededBag.back().second <= 0)
 				diededBag.pop_back();
-			dropItem.insert(make_pair(body, id));
+			dropItem.insert(std::make_pair(body, id));
 		}
 	}
 
@@ -281,7 +281,7 @@ public:
 	/*探测并返回返回方块处的物品 若没有物品返回-1*/
 	int detectionItem(Sprite const &body){
 		//离自己最近的发生碰撞的body
-		map<Sprite, int>::iterator it = dropItem.find(body);
+		std::map<Sprite, int>::iterator it = dropItem.find(body);
 		if (it != dropItem.end()){
 			int re = it->second;
 			dropItem.erase(it);

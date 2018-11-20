@@ -53,7 +53,7 @@ protected:/*虚函数用到的成员才应设为继承可访问的(意味着那个成员可能需要子类管理)
 	RowsSub originView = 0;/*位图资源起点行索引*/
 	View lastView = defaultView;
 	Direction *dir_;//上一次的移动方向
-	shared_ptr<Sprite const> parent;//父画面
+	std::shared_ptr<Sprite const> parent;//父画面
 	//若超出范围会被弹回
 	static bool overRebound;
 public:
@@ -99,11 +99,11 @@ public:
 			*rect_ = *rhs.rect_;
 			return *this;
 		}
-		//右值赋值 移复杂类型(移<=赋 基本类型只有赋) 换指针类型(换<==>赋3次) (也可先delete左边后拷贝构造右边 swap的本意是让右值被系统自动析构)
+		//右值赋值 移复杂类型(移<=赋 基本类型只有赋) 换指针类型(换<==>赋3次) (也可先delete左边后拷贝构造右边 std::swap的本意是让右值被系统自动析构)
 		Iterator& operator=(Iterator &&rvalue){
 			limit = rvalue.limit, i = rvalue.i;
-			swap(iterD_, rvalue.iterD_);
-			swap(rect_, rvalue.rect_);
+			std::swap(iterD_, rvalue.iterD_);
+			std::swap(rect_, rvalue.rect_);
 			return *this;
 		}
 		//左值拷贝构造 申请内存 左值赋值
@@ -220,9 +220,9 @@ public:
 		/*原先内存要delete 因此不能直接赋值 应该交换交换 (右值会被系统自动析构)*/
 		dynamic = rvalue.dynamic;
 		lastView = rvalue.lastView;
-		swap(offsetValue_, rvalue.offsetValue_);//浅拷贝
-		swap(dir_, rvalue.dir_);
-		swap(rect_, rvalue.rect_);
+		std::swap(offsetValue_, rvalue.offsetValue_);//浅拷贝
+		std::swap(dir_, rvalue.dir_);
+		std::swap(rect_, rvalue.rect_);
 		parent = rvalue.parent;
 		originView = rvalue.originView;
 		return *this;
@@ -244,7 +244,7 @@ public:
 		null();
 	}
 
-	void setParent(shared_ptr<Sprite const> const &parent){
+	void setParent(std::shared_ptr<Sprite const> const &parent){
 		this->parent = parent;
 	}
 

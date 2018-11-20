@@ -155,9 +155,6 @@
     <ClInclude Include="src\CollisionEvent.h">
       <Filter>头文件\ecologicEngine</Filter>
     </ClInclude>
-    <ClInclude Include="src\stdafx_new.h">
-      <Filter>头文件\base</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="map0.dat">

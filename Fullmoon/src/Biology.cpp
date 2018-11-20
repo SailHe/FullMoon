@@ -10,14 +10,14 @@ Sprite RenderManager::cameraSprite;
 
 Biology::Biology(DisplayArea* belongs, TYPE type, GP Size const &size)
 : belongs(belongs), type(type)
-, body(new Body(shared_ptr<Timestamp>(new Timestamp()), size, belongs->getBody())) {
+, body(new Body(std::shared_ptr<Timestamp>(new Timestamp()), size, belongs->getBody())) {
 	alloc();
 	if (DEBUG){
 		body->setMessage(getID());
 	}
 
 	/*若和之前的事件碰撞 或者生成在非法的地图位置 则重新生成位置数据*/
-	static list<shared_ptr<CollisionBox>> impactResults;
+	static LinkedList<std::shared_ptr<CollisionBox>> impactResults;
 	belongs->impactDetection(locationEvent(), impactResults);
 	while(!impactResults.empty() || this->isMapBlock()){
 		//重新分配位置
@@ -103,7 +103,7 @@ void Biology::atk(){
 		(dir.y > 0 ? 1 : -1)) * nextBody.getHeight());
 	nextBody.rightward((dir.x == 0 ? 0 : 
 		(dir.x > 0 ? 1 : -1)) * nextBody.getWidth());
-	auto f = shared_ptr<CollisionBox>(new Fight(body->getTimestamp(), nextBody, -attribute().getATK()));
+	auto f = std::shared_ptr<CollisionBox>(new Fight(body->getTimestamp(), nextBody, -attribute().getATK()));
 	//向正前方发动攻击
 	ac->sendImpactEvent(f);
 }
@@ -255,7 +255,7 @@ void Player::operate(){
 	}
 }
 void Player::opKeyboard(){
-	static vector<char> cmd;
+	static ArrayList<char> cmd;
 	//AGI;//对象的基本位移
 	static int d = 8;
 	//斜向移动时1单位的比例系数 即要想在斜向移动等同于x=y的距离那么 原x=y将变为->coefficient*x=coefficient*y

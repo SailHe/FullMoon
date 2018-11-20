@@ -4,7 +4,7 @@
 #define _Attribute_H
 
 using TargetLocation = Sprite;//保证一定是target的非指针类型
-using TargetType = shared_ptr<TargetLocation const>;//(保证一定可以使用->访问)
+using TargetType = std::shared_ptr<TargetLocation const>;//(保证一定可以使用->访问)
 //属性包 (允许外部改变的只有EXP 和HP 其余属性初始化完成后 自动变化)
 //允许外界查看所有推理属性 (计时器比较特殊)
 class Attribute{
@@ -30,7 +30,7 @@ class Attribute{
 
 	size_t currentEcoregionsIndex;//当前所属生态
 
-	shared_ptr<TargetLocation> targetBuffer;//随机目标缓冲
+	std::shared_ptr<TargetLocation> targetBuffer;//随机目标缓冲
 	TargetType target;//目标的位置
 	//初始化
 	void initialize(){
@@ -57,11 +57,11 @@ public:
 	~Attribute(){}
 	//向背包添加cnt个编号为id的物品
 	void addItem(size_t id, int cnt){
-		auto it = find_if(PARAMETER_ALL_OBJECT(bag), [id](const pair <int, int> &a){
+		auto it = find_if(PARAMETER_ALL_OBJECT(bag), [id](const std::pair <int, int> &a){
 			return a.first == id;
 		});
 		if (it == bag.end()){
-			bag.push_back(make_pair(id, cnt));
+			bag.push_back(std::make_pair(id, cnt));
 		}
 		else{
 			(*it).second += cnt;

@@ -6,7 +6,7 @@
 /*生物基类: 种种迹象都表明生物类不是子画面 包涵一个子画面*/
 class Biology{
 private:
-	shared_ptr<Body> body;
+	std::shared_ptr<Body> body;
 	//使用智能指针的原因: 生物死亡后 其内存不会马上销毁 会在所有生物进行目标有效判定(即一轮)后再销毁(防止了二次销毁) 而使用智能指针方便了随机的target
 	//时间戳控制器: 即使生物死亡 只要有生物持有此时间戳 那么就可以判断 数据的有效性 其发出的除位置外的事件仍应当有效
 	TYPE type;/*对象类型*/
@@ -18,10 +18,10 @@ protected:
 	//导航队列: 每次会pop最前面的点作为当前目标点 然后做偏移
 	LinkedList<GP Point> navigationQueue;
 	//精灵的绘制位置与精灵的实际位置有所不同 简单来说系统会将实际位置的地图读取到相机所在的地方进行渲染
-	shared_ptr<Body> drawBody;
+	std::shared_ptr<Body> drawBody;
 	int bypassCount = -1;
 	STATUS status = NORMAL;
-	//shared_ptr<Attribute>
+	//std::shared_ptr<Attribute>
 	Attribute *attribute_;//子类可修改 外部可读取
 	int friendliness;//友好度
 	int gem;/*宝石(货币)*/
@@ -68,7 +68,7 @@ public:
 		*this = rhs;
 	}
 	Biology &operator=(Biology &&rvalue){
-		swap(attribute_, rvalue.attribute_);
+		std::swap(attribute_, rvalue.attribute_);
 		return *this;
 	}
 	Biology(Biology &&rvalue){
@@ -89,7 +89,7 @@ public:
 		}
 		// 共15列每列3个 monsters00-monsters214 同一张图片的批量裂图在底层有优化 不会多次重复加载同一张图
 		FOR(col, 0, 15){
-			wstring alias(_T("monsters"));
+			std::wstring alias(_T("monsters"));
 			//每次循环加载一列的3个动画 每个动画2帧(y轴步进最多步进2帧)
 			wsprintf(&alias[7], _T("%d%d"), 0, col);
 			surface.reLoad(_T("monsters.png"), alias, 16, 6, 0, col, 1, 2, STEP_Y_AXIS);
@@ -126,7 +126,7 @@ public:
 	TYPE getType();
 
 	//返回当前位置事件
-	shared_ptr<CollisionBox> locationEvent(){
+	std::shared_ptr<CollisionBox> locationEvent(){
 		return body;
 	}
 	//返回子画面
@@ -197,7 +197,7 @@ protected:
 	}
 	/*碰撞检测 与 事件处理*/
 	bool collisionDetect(){
-		static list<shared_ptr<CollisionBox>> impactResults;
+		static LinkedList<std::shared_ptr<CollisionBox>> impactResults;
 		belongs->impactDetection(locationEvent(), impactResults);
 		bool obstruct = isMapBlock();//地图阻挡
 		while (!impactResults.empty()){
@@ -375,13 +375,13 @@ public:
 		}
 	}
 private:
-	shared_ptr<CollisionBox> patrolEvent() const {
+	std::shared_ptr<CollisionBox> patrolEvent() const {
 		return patrolBox;
 	}
 	void updatePatrol(){
 		patrolBox->setPatrolCircle(getBody().getCentre());
 	}
-	shared_ptr<PatrolEvent> patrolBox;
+	std::shared_ptr<PatrolEvent> patrolBox;
 };
 
 /*玩家类*/
@@ -426,7 +426,7 @@ public:
 	void operate()override;
 	//菜单控件
 	void menuStrip();
-	void judgeDoubleHit(vector<char> &cmd, vector<char> &lastCmd);
+	void judgeDoubleHit(ArrayList<char> &cmd, ArrayList<char> &lastCmd);
 	void opKeyboard();
 	//若存在改变目标的操作返回true
 	bool opMouse();
@@ -492,13 +492,13 @@ public:
 	}
 private:
 	Sub getFigureSub(Sub figureRowSub, Sub figureColSub){
-		wstring alias(_T("monsters"));
+		std::wstring alias(_T("monsters"));
 		wsprintf(&alias[7], _T("%d%d"), figureRowSub, figureColSub);
 		return Biology::getSurface().getOriginRowsSub(&alias[0]);
 	}
 	//获取一个随机贴图编号
 	Sub getRandomSub(){
-		wstring alias(_T("monsters"));
+		std::wstring alias(_T("monsters"));
 		wsprintf(&alias[7], _T("%d%d"), 0, rand() % 15);
 		return Biology::getSurface().getOriginRowsSub(&alias[0]);
 	}

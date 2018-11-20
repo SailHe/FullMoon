@@ -1,29 +1,49 @@
-#ifndef __Stdafx_H
-#define __Stdafx_H
-#include"E:\Projects\myLib\stdafx.h"
+#ifndef __FULLMOON_STDAFX_H
+#define __FULLMOON_STDAFX_H
+#include"../myLib/stdafx.h"
+//#include"../myLib/extendspace.h"
 #include <thread>
 //#define interface class
 #define implements public
 //地块贴图实际大小为16(GRID有实际效果的可选大小只有16 8 4 2)
 #define GRID 8*2
-#define SkId BYTE//技能id
+//技能id
+#define SkId BYTE
+
+//using namespace std;
+//using namespace std::placeholders;
+//可变数组
+template<typename T>using Varrays = std::vector<T>;
+//数组表
+template<typename T>using ArrayList = std::vector<T>;
+//邻接表
+template<typename T>using LinkedList = std::list<T>;
+
+//背包类
+using Package = std::vector<std::pair<int, int>>;
+typedef int Sub;//下标类型
+typedef Sub RowsSub;//行标类型
+typedef Sub ColsSub;//列标类型
+typedef __int64 I64;
+//_ASSERTE(_CrtCheckMemory());//内存检查
 
 
 
 /*与Biology相关的三种类型:人物 怪物 管理员*/
 enum TYPE { PLAYER, PEOPLE, MANAGER, MONSTER };
-enum STATUS { NORMAL, ABNORMAL, CONK, QUIT, BLOCKING, BYPASS };//正常 异常 昏迷(死亡用成员方法判断) 退出 被阻挡 绕行状态
+//正常 异常 昏迷(死亡用成员方法判断) 退出 被阻挡 绕行状态
+enum STATUS { NORMAL, ABNORMAL, CONK, QUIT, BLOCKING, BYPASS };
 /*视图: up(向上)->背影, down->正面, left->左, right->右  ViewCount:视图个数*/
 enum View { BACK, FRONT, LEFT, RIGHT, ViewCount };
 //用于指定动画静止时是播放哪一帧(起始帧, 上一帧)
 enum StaticFrameEnum { ORIGIN_FRAME, PAST_FRAME };
-enum STEP { STEP_X_AXIS, STEP_Y_AXIS };//步进方向
-enum MODE { ON, OFF, UNDEFINED };//模式
-//using Package = vector<pair<int, int>>;/*背包类*/
+//步进方向
+enum STEP { STEP_X_AXIS, STEP_Y_AXIS };
+//模式
+enum MODE { ON, OFF, UNDEFINED };
 //constant.h
-const View defaultView = BACK;//默认视图(此值转换为int必须是0)
-
-
+//默认视图(此值转换为int必须是0)
+const View defaultView = BACK;
 
 /*
 SHORT GetKeyState(int nVirtKey);// virtual-key code

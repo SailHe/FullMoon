@@ -2,9 +2,8 @@
 #define __Collision_H
 //自定义碰撞事件
 #include"ImpactDetection.h"
-
 //_T()
-#include <tchar.h> 
+#include <tchar.h>
 
 /***************************************** 事件 *******************************************/
 //故事(Story)是按时间顺序讲述的事件.   情节(Plot)是对事件的陌生化(创造性变形): 事情发展的具体经过
@@ -51,7 +50,7 @@ public:
 		//不对自己产生阻挡效果
 		return triggererBox.getOwnerID() == getOwnerID() ? false : obstructEvent();
 	}
-	Message(shared_ptr<Timestamp> const &timestamp, GP Size const &size)
+	Message(std::shared_ptr<Timestamp> const &timestamp, GP Size const &size)
 		: CollisionBox(timestamp, size){
 		memset(messages, 0, sizeof(WCHAR)* 1024);
 	}
@@ -79,7 +78,7 @@ protected:
 class TransmissionEvent : public Message{
 public:
 	//碰撞盒是该巡逻圈的外接矩形
-	TransmissionEvent(shared_ptr<Timestamp> const &timestamp, int radius, size_t nextEcoregionsIndex)
+	TransmissionEvent(std::shared_ptr<Timestamp> const &timestamp, int radius, size_t nextEcoregionsIndex)
 		:Message(timestamp, GP Size(2 * radius, 2 * radius)){
 		patrolCircle.setRadius(radius);
 		this->nextEcoregionsIndex = nextEcoregionsIndex;
@@ -144,7 +143,7 @@ private:
 class PatrolEvent : public Message{
 public:
 	//碰撞盒是该巡逻圈的外接矩形
-	PatrolEvent(shared_ptr<Timestamp> const &timestamp, int radius, Attribute &ownerAttribute)
+	PatrolEvent(std::shared_ptr<Timestamp> const &timestamp, int radius, Attribute &ownerAttribute)
 		:Message(timestamp, GP Size(2 * radius, 2 * radius))
 		, ownerAttribute(ownerAttribute){
 		setRect(GP Rect(100, 100, 550, 30));
@@ -213,18 +212,18 @@ public:
 	}
 
 	//体型碰撞盒必须有时间戳(验证有效性) 大小(用于随机位置)
-	Body(shared_ptr<Timestamp> const &timestamp, GP Size const &size,
-		shared_ptr<Sprite const> const &parent)
+	Body(std::shared_ptr<Timestamp> const &timestamp, GP Size const &size,
+		std::shared_ptr<Sprite const> const &parent)
 		: Message(timestamp, size){
 		//体型默认具有阻挡效果
 		this->obstruct = true;
 		setParent(parent);
 		randomLocation();
 		durationClock.SetDrtTime(3000);
-		setTriggerDistrict(shared_ptr<PolygonShape>(new PolygonShape()));
+		setTriggerDistrict(std::shared_ptr<PolygonShape>(new PolygonShape()));
 	}
 	//持有此体型的实体只需要在需要返回体型的地方返回一个const就可以避免外界使用自己的时间戳了 而自己仍可以使用
-	shared_ptr<Timestamp> &getTimestamp(){
+	std::shared_ptr<Timestamp> &getTimestamp(){
 		return timestamp;
 	}
 	virtual ~Body(){
@@ -242,7 +241,7 @@ class Fight : public Message{
 
 public:
 	//战斗事件未设置父画面
-	Fight(shared_ptr<Timestamp> const &timestamp, Sprite const &location, int value)
+	Fight(std::shared_ptr<Timestamp> const &timestamp, Sprite const &location, int value)
 		: Message(timestamp, GP Size(location.getWidth(), location.getHeight())){
 		//伤害默认没有阻挡效果
 		this->obstruct = false;
@@ -303,7 +302,7 @@ class Item : public Message{
 	}
 public:
 	//物品位置 物品编号
-	Item(shared_ptr<Timestamp> &timestamp, Sprite const &location, size_t id)
+	Item(std::shared_ptr<Timestamp> &timestamp, Sprite const &location, size_t id)
 		: Message(timestamp, GP Size(dialogDistrict.getWidthOfItem(id), dialogDistrict.getHeightOfItem(id))){
 
 		//物品默认没有阻挡效果

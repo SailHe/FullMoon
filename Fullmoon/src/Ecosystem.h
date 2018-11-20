@@ -65,11 +65,11 @@ public:
 
 private:
 	GP Size windowSize;
-	vector<DisplayArea *> ecoregions;//生态
+	ArrayList<DisplayArea *> ecoregions;//生态
 	//玩家所在生态的编号
 	size_t ecoregionsIndex = -1;
 	Sprite gameWindowCentreSprite;
-	shared_ptr<Player> player = nullptr;/*玩家实体*/
+	std::shared_ptr<Player> player = nullptr;/*玩家实体*/
 };
 
 

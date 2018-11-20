@@ -9,7 +9,7 @@ class BoundingBox{
 protected:
 	clock_t createClock = clock();//对象生成时间
 	//体型对象对应一个实体, 只有实体才能获取时间戳
-	shared_ptr<Timestamp> timestamp;
+	std::shared_ptr<Timestamp> timestamp;
 	bool obstruct = false;//阻挡效果 碰撞不一定阻挡(为什么不整合Body和ImpacttShell的理由)
 	TimeClock durationClock;/*持续时间 超过该时间后无效*/
 	/*
@@ -26,7 +26,7 @@ protected:
 	}
 public:
 
-	BoundingBox(shared_ptr<Timestamp> const &timestamp)
+	BoundingBox(std::shared_ptr<Timestamp> const &timestamp)
 		:timestamp(timestamp){
 	}
 
@@ -58,14 +58,14 @@ public:
 //矩形碰撞盒: 能进行碰撞判定的子画面
 class CollisionBox : public Sprite, public BoundingBox{
 public:
-	using CollisionBoxList = LinkedList<shared_ptr<CollisionBox>>;
+	using CollisionBoxList = LinkedList<std::shared_ptr<CollisionBox>>;
 
-	CollisionBox(shared_ptr<Timestamp> const &timestamp, int h = 0, int w = 0)
+	CollisionBox(std::shared_ptr<Timestamp> const &timestamp, int h = 0, int w = 0)
 		:BoundingBox(timestamp){
 		this->setSize(w, h);
 	}
 	//盒子的位置可以待定 但大小必须知道
-	CollisionBox(shared_ptr<Timestamp> const &timestamp, GP Size const &size)
+	CollisionBox(std::shared_ptr<Timestamp> const &timestamp, GP Size const &size)
 		:BoundingBox(timestamp), Sprite(size){
 	}
 
@@ -102,7 +102,7 @@ public:
 		}
 	};
 
-	void setTriggerDistrict(shared_ptr<PolygonShape> triggerDistrict){
+	void setTriggerDistrict(std::shared_ptr<PolygonShape> triggerDistrict){
 		this->triggerDistrict = triggerDistrict;
 	}
 
@@ -121,14 +121,14 @@ public:
 	}
 protected:
 private:
-	shared_ptr<CollisionBox> newNode(shared_ptr<Timestamp> const &timestamp,
+	std::shared_ptr<CollisionBox> newNode(std::shared_ptr<Timestamp> const &timestamp,
 		int x = 0, int y = 0, int h = 0, int w = 0)const{
 		auto temp = new CollisionBox(timestamp, w, h);
 		temp->setLocation(x, y);
-		return shared_ptr<CollisionBox>(temp);
+		return std::shared_ptr<CollisionBox>(temp);
 	}
 	//实际碰撞触发区域
-	shared_ptr<PolygonShape> triggerDistrict;
+	std::shared_ptr<PolygonShape> triggerDistrict;
 };
 
 //包围盒组
@@ -150,7 +150,7 @@ public:
 		THREE = 2, 
 		FOUR = 3 
 	};
-	using NodesArray = vector<shared_ptr<QuadTreeNode>>;//如果需要支持赋值和拷贝操作的话 不能用shared_ptr<>管理指针
+	using NodesArray = ArrayList<std::shared_ptr<QuadTreeNode>>;//如果需要支持赋值和拷贝操作的话 不能用std::shared_ptr<>管理指针
 	
 	//new一个CollisionBox此对象会管理
 	QuadTreeNode(Sprite *&&bounds, QuadTreeNode *parent = nullptr, int level = 0)
@@ -197,8 +197,8 @@ public:
 		return sizeCounter;
 	}
 
-	shared_ptr<QuadTreeNode> newNode(QuadTreeNode *parent, int x, int y, int w, int h)const{
-		return shared_ptr<QuadTreeNode>(new QuadTreeNode(new Sprite(GP Rect(x, y, w, h)), parent, level + 1));
+	std::shared_ptr<QuadTreeNode> newNode(QuadTreeNode *parent, int x, int y, int w, int h)const{
+		return std::shared_ptr<QuadTreeNode>(new QuadTreeNode(new Sprite(GP Rect(x, y, w, h)), parent, level + 1));
 	}
 
 	//是根结点返回true
@@ -207,7 +207,7 @@ public:
 	}
 
 	//内部检索
-	void retrieveIn(shared_ptr<CollisionBox> const &collisionBox,
+	void retrieveIn(std::shared_ptr<CollisionBox> const &collisionBox,
 		CollisionBoxList &results)const{
 
 		if (count == 0){
@@ -297,7 +297,7 @@ public:
 	}
 
 	//返回碰撞盒的子象限索引
-	QuadrantEnum getQuadrantIndex(shared_ptr<CollisionBox> const &collisionBox,
+	QuadrantEnum getQuadrantIndex(std::shared_ptr<CollisionBox> const &collisionBox,
 		bool checkIsInner = true)const{
 			static GP Point centre;
 			static GP Rect rect;
@@ -340,7 +340,7 @@ public:
 		}
 
 	//内部递归插入接口 (parent非nullptr 已知index时可以不重复计算)
-	bool insert(shared_ptr<CollisionBox> const &collisionBox,
+	bool insert(std::shared_ptr<CollisionBox> const &collisionBox,
 		QuadTreeNode *parent, QuadrantEnum index = UNDEFINED){
 			static bool fromSub = false;
 			if (fromSub){
@@ -400,7 +400,7 @@ private:
 	NodesArray quadrants;//存储四个子象限节点
 	int level;//该节点的深度，根节点的默认深度为0
 	QuadTreeNode *parent = nullptr;//空表示root
-	shared_ptr<Sprite> bounds;//界限: 该节点对应的象限在屏幕上的范围，bounds是一个矩形
+	std::shared_ptr<Sprite> bounds;//界限: 该节点对应的象限在屏幕上的范围，bounds是一个矩形
 };
 
 //四叉树(场景管理 皮影戏)
@@ -410,7 +410,7 @@ public:
 		:root(new Sprite(bounds)){
 	}
 	//插入一个碰撞盒
-	bool insert(shared_ptr<CollisionBox> const &collisionBox){
+	bool insert(std::shared_ptr<CollisionBox> const &collisionBox){
 		//解决插入象限溢出(同时在出现可能的溢出错误时不报错 也导致了一些bug难以发现) 
 		//如果采用直接插在Root象限的话: 碰撞盒原属于Root象限的父象限 当它进入了Root的某个子象限再返回时Root的"父象限"时会引发: 从Root删除->插入"父象限"->迭代 的无限刷新
 		if (!root.insert(collisionBox, nullptr)){
@@ -429,7 +429,7 @@ public:
 	}
 
 	//检索: 返回可能碰撞的最小集合
-	void retrieve(shared_ptr<CollisionBox> const &collisionBox, CollisionBoxList &results) const {
+	void retrieve(std::shared_ptr<CollisionBox> const &collisionBox, CollisionBoxList &results) const {
 		root.retrieveIn(collisionBox, results);
 		//results.splice(results.end(), CollisionBoxList(overflowList)}); //concat: 合并两个集合(保留后者)
 		FOR (it, overflowList.begin(), overflowList.end()){

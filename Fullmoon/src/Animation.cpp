@@ -72,11 +72,11 @@ void WindowSprite::speValBar(int value, int fullValue, GP Color color){
 	messenger.getGraphics()->FillRectangle(&liGrBrush, area);
 	setLocation(area.X - 1, area.Y - 1);/*实时窗框位置:与外围框齐平*/
 }
-void WindowSprite::specificValueToBuffer(int value, int fullValue, wstring const &str){
+void WindowSprite::specificValueToBuffer(int value, int fullValue, std::wstring const &str){
 	wcscpy_s(messageBuffer, str.c_str());
 	wsprintf(messageBuffer + str.length(), _T(" %d / %d"), value, fullValue);
 }
-void WindowSprite::inventoryTabs(Package const &bag, vector<Sprite> &ItemsBox){
+void WindowSprite::inventoryTabs(Package const &bag, ArrayList<Sprite> &ItemsBox){
 	//一个物品的固定宽高
 	int w = getWidthOfItem(0), h = getHeightOfItem(0);
 	auto rect = getRect();
