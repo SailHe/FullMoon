@@ -2,8 +2,12 @@
 #define __Atlas_H
 //地图集
 #include"ImpactDetection.h"
-#include"E:\Projects\myLib\Graph.h"
-#include"E:\Projects\myLib\TreeObject.h"
+//#include"E:\Projects\myLib\Graph.h"
+//#include"E:\Projects\myLib\TreeObject.h"
+//#include "E:\Projects\Source\Repos\archives-algorithm\DSAUtilityExtension\src\Graph\Graph.h"
+//#include "E:\Projects\Source\Repos\archives-algorithm\DSAUtilityExtension\src\Graph\TreeObject.h"
+#include"../myLib/Graph/Graph.h"
+#include"../myLib/Graph/TreeObject.h"
 
 /*渲染类 不建议做拷贝操作*/
 class RenderManager{
@@ -173,7 +177,9 @@ private:
 	Message;//实际的值*/
 	QuadTree impactTree;//碰撞树
 
-	list<shared_ptr<CollisionBox> const> eventRegistry;//事件注册表priority_queue<EventParcel>
+	// STL中不允许 const @see https://stackoverflow.com/questions/35764948/xmemory-errors-in-c-project-after-migrating-vs-2012-to-vs-2015
+	//list<shared_ptr<CollisionBox> const> eventRegistry;//事件注册表priority_queue<EventParcel>
+	list<shared_ptr<CollisionBox>> eventRegistry;//事件注册表priority_queue<EventParcel>
 	TimeClock refreshTime;
 	int detectionCount = 0;//探测开始时的事件数
 public:

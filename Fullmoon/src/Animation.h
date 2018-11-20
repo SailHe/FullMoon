@@ -48,7 +48,8 @@ public:
 			//deviceBuffer = new Bitmap(deviceBufferRes.c_str());
 			deviceBuffer = new Bitmap(size.Width, size.Height);
 			//@TODO 关闭hdc
-			deviceGraphics_ = GP Graphics::FromHDC(GetDC(GetHWnd()));
+			//deviceGraphics_ = GP Graphics::FromHDC(GetDC(GetHWnd()));
+			deviceGraphics_ = GP Graphics::FromHDC(GetDC(GetActiveWindow()));
 			deviceBufferGraphics = deviceBufferGraphics_ = GP Graphics::FromImage(deviceBuffer);
 			myPen = new Pen(GP Color(255, 255, 0, 0));
 		}else{//绘图终止 绘图卸载
@@ -390,7 +391,9 @@ public:
 	/*********************************基本的图形绘制方法****************************/
 	void drawPoint(GP Point const &p){
 		//esayX绘制像素点
-		putpixel(p.X, p.Y, BLACK);
+		// putpixel(p.X, p.Y, BLACK);
+		// @TODO
+		getchar();
 	}
 	void drawLine(GP Point const &o, GP Point const &e){
 		messenger.getGraphics()->DrawLine(messenger.pen(255, 128, 0, 0), o, e);
@@ -460,7 +463,10 @@ public:
 		messenger.draw(mouse);
 	}
 	bool massageBox(PTCHAR massage, PTCHAR tips = _T("tips")){
-		return MessageBox(GetHWnd(), massage, tips, MB_YESNO) == IDYES;
+		// 第一个参数设置为0，第一个参数是依赖的窗口的编号，相当于谁弹出的窗口，0为系统弹出，第二个参数是对话框的内容，
+		// 第三个参数是对话框的标题，第四个参数是对话框类型，设置成0即可
+		//return MessageBox(GetHWnd(), massage, tips, MB_YESNO) == IDYES;
+		return MessageBox(0, massage, tips, MB_YESNO) == IDYES;
 	}
 	//显示数字
 	void drawNumber(int value){

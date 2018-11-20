@@ -1,4 +1,5 @@
-#include <graphics.h>
+//#include <graphics.h>
+//#include "../Includes/turbo/graphics.h"
 #include <conio.h>
 #include "Biology.h"
 
@@ -9,6 +10,7 @@
 //		tilesize: 马赛克的尺寸
 //		startx: 马赛克的平铺起始位置 x 坐标
 //		starty: 马赛克的平铺起始位置 y 坐标
+/*
 void Mosaic(IMAGE *pimg, int tilesize, int startx, int starty)
 {
 	int	width = pimg->getwidth();		// 图像的宽
@@ -56,7 +58,7 @@ void Mosaic(IMAGE *pimg, int tilesize, int startx, int starty)
 		for (tx = min(x + tilesize, width) - 1; tx >= max(x, 0); tx--)
 			pMem[ty * width + tx] = color;
 	}
-}
+}*/
 
 /*马赛克穿越动画 第一次只有加载 没有马赛克*/
 void DisplayArea::mosaicImage(GP Bitmap const *img, Graphics *graphics){

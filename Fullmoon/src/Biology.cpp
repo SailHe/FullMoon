@@ -263,19 +263,19 @@ void Player::opKeyboard(){
 	int dx = getBody().getDx(), dy = getBody().getDy();//·ÖÎ»ÒÆ
 
 	
-	if (KEY_DOWN(0x41)){
+	if (KEY_DOWN_DETECTION(0x41)){
 		cmd.push_back('a');
 	}
-	if (KEY_DOWN(0x44)){
+	if (KEY_DOWN_DETECTION(0x44)){
 		cmd.push_back('d');
 	}
-	if (KEY_DOWN(0x53)){
+	if (KEY_DOWN_DETECTION(0x53)){
 		cmd.push_back('s');
 	}
-	if (KEY_DOWN(0x57)){
+	if (KEY_DOWN_DETECTION(0x57)){
 		cmd.push_back('w');
 	}
-	if (KEY_DOWN(0x4A)){
+	if (KEY_DOWN_DETECTION(0x4A)){
 		cmd.push_back('j');
 	}
 	/*
@@ -283,7 +283,7 @@ void Player::opKeyboard(){
 	if (temp == -32767){
 		cmd.push_back(9);
 	}*/
-	if (KEY_DOWN(VK_TAB) && !KEY_DOWN(VK_MENU)){//VK_MENU (alt¼ü)
+	if (KEY_DOWN_DETECTION(VK_TAB) && !KEY_DOWN_DETECTION(VK_MENU)){//VK_MENU (alt¼ü)
 		//tab°´¼üÑÓ³Ù
 		static TimeClock tabdelay(300);
 		if (tabdelay.IsTimeOut()){

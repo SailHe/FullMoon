@@ -2,7 +2,7 @@
 #define __Constant_H
 #include "stdafx.h"
 //#include <graphics.h>
-#include "../Includes/turbo/graphics.h"
+//#include "../Includes/turbo/graphics.h"
 #include "gdi.h"
 
 class Constant{

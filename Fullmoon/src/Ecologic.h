@@ -160,7 +160,7 @@ public:
 	}
 
 	// 重绘地图缓冲区的方法
-	void drawBuffer(Graphics &g) {
+	void drawBuffer(GP Graphics &g) {
 		leftTopX = RenderManager::displaySprite.getLocation().X;
 		if (oldLeftTopX == leftTopX) {// 如果屏幕没有发生卷动则直接返回
 			return;
@@ -213,7 +213,7 @@ public:
 	}
 
 	//绘制缓冲区中选区的地图
-	 void drawClipBuffer(Graphics &g) {
+	 void drawClipBuffer(GP Graphics &g) {
 
 		// 求出起始格子的索引号
 		int iStart = 0;// 计算y方向（纵向）的起始地图单元格索引
@@ -275,7 +275,7 @@ public:
 	}
 
 	//卡马克卷轴方法画地图
-	 void drawCarmarkMap(Graphics &g, Image *imageBuffer) {
+	 void drawCarmarkMap(GP Graphics &g, Image *imageBuffer) {
 		
 		// clipX屏幕分割点，用于在屏幕上进行选区，取值为(0,w]
 		clipX += oldLeftTopX - leftTopX;

@@ -31,8 +31,8 @@ SHORT GetKeyState(int nVirtKey);// virtual-key code
 参数：虚拟键代码（VK_)。如果是字母a-z、A-Z 或数字0-9， 则为其对应的ASCII码（比如字母O的ASCII码为十六进制的0x4F）
 返回值：返回码的高位显示当前是否有键被按下，低位（0位）则显示NumLock、CapsLock、ScrollLock的状态（ON或OFF，为ON时键盘指示灯亮）。即高位为1，返回值小于0，说明有键按下；最低位为1表示处于锁定（ON）状态
 */
-#define KEY_DOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? true : false) 
-#define KEY_UP(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? false : true)
+#define KEY_DOWN_DETECTION(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? true : false) 
+#define KEY_UP_DETECTION(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? false : true)
 typedef class Biology *BioPointer;//生物对象指针 在生物类中有使用
 
 struct MOUSEMSG

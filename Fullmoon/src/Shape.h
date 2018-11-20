@@ -1,9 +1,16 @@
 #include "stdafx.h"
 //#include <graphics.h>
-#include "../Includes/turbo/graphics.h"
+//#include "../Includes/turbo/graphics.h"
 #include "gdi.h"
 //_T
-#include <tchar.h> 
+#include <tchar.h>
+
+// 里面有infinity
+#include"../myLib/Graph/Graph.h"
+#include"../myLib/Graph/TreeObject.h"
+
+// GetWindow: winuser.h (include Windows.h)
+//#include <winuser.h>
 
 template<class T>
 //2D矢量 指一个同时具有大小和方向，且满足平行四边形法则的几何对象。 也可表示点(但没用于表示点)
