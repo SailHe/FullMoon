@@ -362,7 +362,7 @@ namespace EcologicEngine {
 	class WindowSprite : public Sprite {
 		void alloc() {
 			memset(windowTitle, 0, Constant::BUFFER_MAX_BIT * sizeof(WCHAR));
-			memset(messageBuffer, 0, Constant::BUFFER_MAX_BIT * sizeof(WCHAR));
+			memset(tempBuffer, 0, Constant::BUFFER_MAX_BIT * sizeof(WCHAR));
 		}
 	public:
 		WindowSprite()
@@ -382,7 +382,7 @@ namespace EcologicEngine {
 
 		WindowSprite &operator=(WindowSprite const &rhs) {
 			alloc();
-			wcscpy_s(messageBuffer, rhs.messageBuffer);
+			wcscpy_s(tempBuffer, rhs.tempBuffer);
 			wcscpy_s(windowTitle, rhs.windowTitle);
 			return *this;
 		}
@@ -543,7 +543,7 @@ namespace EcologicEngine {
 		void drawStatusBar(size_t left, size_t top, std::wstring const &name, int statusValue, int statusFullValue, GP Color color = BLACK_) {
 			specificValueToBuffer(statusValue, statusFullValue, name);
 			//字体大小根据状态框背景自适应
-			text(messageBuffer, left + (int)(Constant::mainCanvasSize.Width*0.005), top, getWidth() / 24, color);
+			text(tempBuffer, left + (int)(Constant::mainCanvasSize.Width*0.005), top, getWidth() / 24, color);
 		}
 		/*展示编号为id的一个物品*/
 		void drawItem(size_t id, GP Point const &position) {
@@ -692,8 +692,58 @@ namespace EcologicEngine {
 		static AnimationManager messenger;/*^_^ 先驱 梅辛杰*/
 		// 鼠标 初始位置(0, 0)
 		static Sprite mouse;
-		//PTSTR或WCHAR*
-		WCHAR messageBuffer[Constant::BUFFER_MAX_BIT], windowTitle[Constant::BUFFER_MAX_BIT];
+
+		// PTSTR或WCHAR*
+		// 临时缓冲区(只用于方法内部)
+		WCHAR tempBuffer[Constant::BUFFER_MAX_BIT];
+		
+		// 标题或是名称
+		WCHAR windowTitle[Constant::BUFFER_MAX_BIT];
+	};
+
+	class Logger {
+	public:
+		// 向缓冲区中写入一行
+		static void writeLine(WCHAR const *message) {
+			std::wstring temp(message);
+			messageBuffer += ((temp + _T("\r\n")).c_str());
+		}
+		// 输出缓冲区消息到屏幕日志指定位置
+		static void outPut() {
+			loggerSprite.text(
+				messageBuffer.c_str()
+				, Sprite(
+					Constant::mainCanvasSize
+					, Constant::mainCanvasSize.Width / 20
+					, Constant::mainCanvasSize.Height - 135
+				)
+				, 15, BLUE_);
+		}
+
+		// 删除缓冲区最早的一行 若缓冲区超过Constant::BUFFER_MAX_BIT 则会清空
+		static void eraseLine() {
+			auto index = messageBuffer.find_first_of('\n');
+			if (index == std::wstring::npos) {
+				// do nothing
+			}
+			else {
+				messageBuffer = messageBuffer.substr(index);
+			}
+
+			if (messageBuffer.size() > Constant::BUFFER_MAX_BIT) {
+				clear();
+				messageBuffer = _T("缓冲区过大, 已清空");
+			}
+		}
+
+		// 清空缓冲区
+		static void clear() {
+			messageBuffer.clear();
+		}
+	private:
+		static WindowSprite loggerSprite;
+		// 消息缓冲区(可将消息存储于此)
+		static std::wstring messageBuffer;
 	};
 
 	//时间戳  (为了保证时间戳的唯一性: 不允许拷贝与赋值 推荐使用智能指针)

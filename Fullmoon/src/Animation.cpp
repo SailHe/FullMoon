@@ -33,10 +33,12 @@ namespace EcologicEngine {
 		return -1;
 	}
 
-	GP Point Sprite::lhsP;//这两个只能由于类内部的临时比较 不能返回
+	//这两个只能由于类内部的临时比较 不能返回
+	GP Point Sprite::lhsP;
 	GP Point Sprite::rhsP;
 	bool Sprite::overRebound = false;
-	WCHAR AnimationManager::buf[Constant::BUFFER_MAX_BIT] = { L"res\\" };//绝对路径
+	//绝对路径
+	WCHAR AnimationManager::buf[Constant::BUFFER_MAX_BIT] = { L"res\\" };
 	GP Graphics *AnimationManager::deviceGraphics_ = nullptr;
 	GP Graphics *AnimationManager::deviceBufferGraphics_ = nullptr;
 	GP Status AnimationManager::pastStatus = GP Status::GdiplusNotInitialized;
@@ -45,6 +47,10 @@ namespace EcologicEngine {
 	Sprite WindowSprite::mouse;
 
 	AnimationManager WindowSprite::messenger;
+
+	WindowSprite Logger::loggerSprite;
+	// 消息缓冲区(可将消息存储于此)
+	std::wstring Logger::messageBuffer;
 
 	int Timestamp::ID = -1;
 
@@ -75,8 +81,8 @@ namespace EcologicEngine {
 		setLocation(area.X - 1, area.Y - 1);/*实时窗框位置:与外围框齐平*/
 	}
 	void WindowSprite::specificValueToBuffer(int value, int fullValue, std::wstring const &str) {
-		wcscpy_s(messageBuffer, str.c_str());
-		wsprintf(messageBuffer + str.length(), _T(" %d / %d"), value, fullValue);
+		wcscpy_s(tempBuffer, str.c_str());
+		wsprintf(tempBuffer + str.length(), _T(" %d / %d"), value, fullValue);
 	}
 	void WindowSprite::inventoryTabs(Package const &bag, ArrayList<Sprite> &ItemsBox) {
 		//一个物品的固定宽高
@@ -96,8 +102,8 @@ namespace EcologicEngine {
 
 			drawItem(id, position);
 			messenger.getGraphics()->DrawRectangle(messenger.pen(), itemRect.getRect());
-			wsprintf(messageBuffer, _T("%d"), itemCnt);
-			text(messageBuffer, itemRect.getRect().GetRight() - w / 3, itemRect.getRect().GetBottom() - h / 2, 11, BLACK_);
+			wsprintf(tempBuffer, _T("%d"), itemCnt);
+			text(tempBuffer, itemRect.getRect().GetRight() - w / 3, itemRect.getRect().GetBottom() - h / 2, 11, BLACK_);
 
 			position.X += w;
 			if (position.X > rect.GetRight() - 3 * w) {

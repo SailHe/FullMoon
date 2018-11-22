@@ -1,7 +1,6 @@
 #ifndef __FULLMOON_STDAFX_H
 #define __FULLMOON_STDAFX_H
 #include"../myLib/stdafx.h"
-//#include"../myLib/extendspace.h"
 #include <thread>
 //#define interface class
 #define implements public

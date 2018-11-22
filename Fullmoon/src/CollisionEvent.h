@@ -64,14 +64,15 @@ namespace EcologicEngine {
 		void setMessage(int num) {
 			wsprintf(messages, _T(" %d"), num);
 		}
-		void messagePlush(WCHAR *message = _T("")) {
+		void messagePlush(WCHAR const *message = _T("")) {
 			wsprintf(this->messages + wcslen(messages), message);
 		}
 		void messagePlush(int num) {
 			wsprintf(messages + wcslen(messages), _T("%d"), num);
 		}
 	protected:
-		WCHAR messages[1024];//文字消息
+		//文字消息
+		WCHAR messages[1024];
 		//Sprite Message::dialogueDistrict = Sprite(GP Rect(100, 100, 550, 30));
 		WindowSprite dialogDistrict = WindowSprite(_T("Message dialog"));//消息 展示会话框
 	};

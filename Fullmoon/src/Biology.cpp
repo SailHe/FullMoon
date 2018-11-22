@@ -219,12 +219,14 @@ namespace EcologicEngine {
 		//改变位移矢量
 		opKeyboard();
 		if (menuMode == ON) {
+			Logger::writeLine(_T("你打开了菜单"));
 			menuStrip();
 			if (status == QUIT) {
 				return;
 			}
 		}
-		else {//改变目标
+		else {
+			//改变目标
 			if (opMouse()) {
 				shortestPathResult.reset();
 				navigationQueue.clear();

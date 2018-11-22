@@ -59,7 +59,7 @@ namespace EcologicEngine {
 
 			}
 			//ÅĞ¶ÏµØÍ¼µÄÒÆ¶¯
-			//ecoregions[ecoregionsIndex]->renderDisplayMap();
+			ecoregions[ecoregionsIndex]->renderDisplayMap();
 			ecoregions[ecoregionsIndex]->draw(plat);
 			shawEcologic();
 			ecoregions[ecoregionsIndex]->run();

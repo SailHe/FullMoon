@@ -35,6 +35,11 @@ public:
 		//static TimeClock gameRefresh = TimeClock(1000 / 60);while (!gameRefresh.IsTimeOut());
 		//putimage(0, 0, &plat);
 		deviceBufferGraphics->DrawImage(plat_, mainSprite.getRect());
+
+		//ECE::WindowSprite().dialogue(_T("--这里可以用--"));
+		ECE::Logger::outPut();
+		ECE::Logger::eraseLine();
+
 		//drawMap(*deviceBufferGraphics);
 		return ecosystem.running(plat_);
 	}

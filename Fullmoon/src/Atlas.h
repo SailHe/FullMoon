@@ -4,6 +4,7 @@
 #include "CollisionEvent.h"
 
 namespace EcologicEngine {
+
 	// 碰撞群
 	using Colony = std::map<int, CollisionBox>;
 	/*
@@ -115,7 +116,7 @@ namespace EcologicEngine {
 			renderOriginSprite.setSize(mapRenderSprite.getRect().Width, mapRenderSprite.getRect().Height);
 			renderOriginSprite.setCentre(RenderManager::cameraSprite.getCentre());
 			auto it = renderOriginSprite.pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
-			//n维数组的size()就是其第n维数组的大小 即最先索引的一维 x y z分别是3 2 1维 (h w)或(x y)分别是2 1
+			// n维数组的size()就是其第n维数组的大小 即最先索引的一维 x y z分别是3 2 1维 (h w)或(x y)分别是2 1
 			while (it.iterate(x, y)) {
 				mapIter.iterate(mapX, mapY);
 				renderPlot(x, y, mapX, mapY);
@@ -174,22 +175,29 @@ namespace EcologicEngine {
 		// 重绘地图缓冲区的方法
 		void drawBuffer(GP Graphics &g) {
 			leftTopX = RenderManager::displayArea.getLocation().X;
-			if (oldLeftTopX == leftTopX) {// 如果屏幕没有发生卷动则直接返回
+			if (oldLeftTopX == leftTopX) {
+				// 如果屏幕没有发生卷动则直接返回
+				Logger::writeLine(_T("----------没有发生卷动------------"));
+				Logger::writeLine(_T("-------没有发生卷动第二行---------"));
 				return;
 			}
 
 			// bufClipX缓冲区分割点，和屏幕分割点有一定的关系，取值为[0,w)
 			bufClipX += leftTopX - oldLeftTopX;
-			if (bufClipX < 0) {// 向左走的修正
+			if (bufClipX < 0) {
+				// 向左走的修正
 				bufClipX += w;
 			}
-			else if (bufClipX > w) {// 向右走的修正
+			else if (bufClipX > w) {
+				// 向右走的修正
 				bufClipX -= w;
 			}
 
-			if (leftTopX - oldLeftTopX > 0) {// 向右走
+			if (leftTopX - oldLeftTopX > 0) {
+				// 向右走
 				// System.out.println("→");
-				if (abs(oldBufClipX - bufClipX) > 200) {// oldBufClipX和bufClipX在缓冲区的两端！
+				if (abs(oldBufClipX - bufClipX) > 200) {
+					// oldBufClipX和bufClipX在缓冲区的两端！
 					// 设置两个选区，分别填充！
 					g.SetClip(Rect(oldBufClipX, 0, abs(oldBufClipX - w), h));
 					drawClipBuffer(*maper.getGraphics());
@@ -203,9 +211,11 @@ namespace EcologicEngine {
 				}
 
 			}
-			else {// 向左走
+			else {
+				// 向左走
 				// System.out.println("←");
-				if (abs(oldBufClipX - bufClipX) > 200) {// oldBufClipX和bufClipX在缓冲区的两端！
+				if (abs(oldBufClipX - bufClipX) > 200) {
+					// oldBufClipX和bufClipX在缓冲区的两端！
 					// 设置两个选区，分别填充！
 					g.SetClip(Rect(0, 0, oldBufClipX, h));
 					drawClipBuffer(*maper.getGraphics());
@@ -309,7 +319,8 @@ namespace EcologicEngine {
 
 			g.SetClip(Rect(0, 0, clipX, Constant::mainCanvasSize.Height), CombineModeReplace);
 			//revise修正 g.DrawImage(imageBuffer, drawX, Data.REVISE_Y, 0);// 贴上不需要重绘的区域
-			g.DrawImage(imageBuffer, drawX, 0);// 贴上不需要重绘的区域
+			// 贴上不需要重绘的区域
+			g.DrawImage(imageBuffer, drawX, 0);
 			//renderPlot(drawX, 0);
 
 			g.SetClip(Rect(clipX, 0, Constant::mainCanvasSize.Width - clipX, Constant::mainCanvasSize.Height), CombineModeReplace);

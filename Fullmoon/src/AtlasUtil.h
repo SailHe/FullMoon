@@ -169,17 +169,22 @@ namespace EcologicEngine {
 		//接收者的接收能力范围 广播的影响范围
 		//value用引用不行(实体的引用方法返回也是左值) 只能用指针 (用指针的右值引用将引发奇怪的错误)
 		//左边用Body事件就行
-		/*Base::iterator;//迭代器 = {}
+		/*
+		Base::iterator;//迭代器 = {}
 		InsertValue = Base::value_type;//插入值 = {key, value}
 		Key = Base::key_type;//实际键
-		Message;//实际的值*/
-		QuadTree impactTree;//碰撞树
+		Message;//实际的值
+		*/
+		//碰撞树
+		QuadTree impactTree;
 
 		// STL中不允许 const @see https://stackoverflow.com/questions/35764948/xmemory-errors-in-c-project-after-migrating-vs-2012-to-vs-2015
-		//LinkedList<std::shared_ptr<CollisionBox> const> eventRegistry;//事件注册表priority_queue<EventParcel>
-		LinkedList<std::shared_ptr<CollisionBox>> eventRegistry;//事件注册表priority_queue<EventParcel>
+		//LinkedList<std::shared_ptr<CollisionBox> const> eventRegistry;
+		//事件注册表priority_queue<EventParcel>
+		LinkedList<std::shared_ptr<CollisionBox>> eventRegistry;
 		TimeClock refreshTime;
-		int detectionCount = 0;//探测开始时的事件数
+		//探测开始时的事件数
+		int detectionCount = 0;
 	public:
 
 		EventImpactManager(Sprite const &window)
