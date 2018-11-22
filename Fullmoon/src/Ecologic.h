@@ -4,10 +4,8 @@
 #include "CollisionEvent.h"
 
 namespace EcologicEngine {
-	//extern Biology;
 	//群体类
 	using Colony = std::map<int, CollisionBox>;
-	using BiologyManager = std::shared_ptr<Biology>;
 	/*
 	生态区域 :剧本 掉落物 群体 具有通信, 渲染功能
 	在构造一个生态后应当自动渲染 然后提供剧请通信和物品通信的接口
@@ -27,8 +25,8 @@ namespace EcologicEngine {
 			//如果在生成生物前没有初始化渲染地图的话那么将会引起初始化位置的错误
 			loadPlat();
 			ecoregionWindow.setRect(mapBody.getRect());
-			createColony(bioCount);//生物数为size
-			registration();
+			/// createColony(bioCount);//生物数为size
+			/// registration();
 		}
 
 		DisplayArea &operator=(DisplayArea &&rvalue) {
@@ -346,7 +344,7 @@ namespace EcologicEngine {
 
 			return GP Point(entrance.getRect().X, entrance.getRect().Y);
 		}
-		void registration();
+		//void registration();
 
 		//编辑生态:使body处的地图重新渲染为渲染号为id的地块
 		void edit(Sprite const &body, int id) {
@@ -405,8 +403,7 @@ namespace EcologicEngine {
 			return parityGraph.shortestPath(startId, dist, path);
 		}
 
-		//展示此生态
-		bool shawEcologic();
+		bool run();
 
 	private:
 		//渲染x y处的地块到地图的对应位置
@@ -435,11 +432,10 @@ namespace EcologicEngine {
 
 		void mosaicImage(Bitmap const *, Graphics*);
 		//创建属于生态Be的大小为bioCount的生物群 并传入玩家(若玩家为空 那么将创建并默认将该玩家置于此生态内)
-		void createColony(size_t bioCount);
+		//void createColony(size_t bioCount);
 
 		std::shared_ptr<Timestamp> timestamp;
-		//该生态的所有成员 <body信息, 实体(多态需要用指针)> 若在栈上申请过多内存会溢出 new是在堆上申请
-		std::map<int, BiologyManager> member;
+		
 		//地图资源管理员实体
 		static AnimationManager maper;
 		//生态区域大小

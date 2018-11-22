@@ -1,13 +1,12 @@
 #ifndef __Biology_H
 #define __Biology_H
 
-typedef class Biology *BioPointer;//生物对象指针 在生物类中有使用
 //生态区域->生物->生态系统
 #include "Ecologic.h"
-//namespace EcologicEngine {
+namespace EcologicEngine {
+	//生物对象指针 在生物类中有使用
+	typedef class Biology *BioPointer;
 
-	using namespace EcologicEngine;
-	
 	/*生物基类: 种种迹象都表明生物类不是子画面 包涵一个子画面*/
 	class Biology {
 	private:
@@ -522,6 +521,6 @@ typedef class Biology *BioPointer;//生物对象指针 在生物类中有使用
 		}
 	};
 
-//}
+}
 
 #endif

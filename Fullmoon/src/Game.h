@@ -59,7 +59,7 @@ private:
 		//deviceGraphics->DrawImage(plat_, mainSprite.getRect());
 		//putimage(0, 0, &plat);//图形引擎启动成功
 		ECE::WindowSprite::loading();
-		Biology::loading();
+		ECE::Biology::loading();
 		/*graphics_->GetHDC();*///地图画板:关联plat的hdc的绘图对象
 		mapGraphics = GP Graphics::FromImage(plat_);
 		ECE::DisplayArea::loading(mapGraphics
@@ -110,7 +110,7 @@ private:
 	ECE::Sprite mainSprite;//窗体body
 	GP Graphics *deviceGraphics = nullptr, *deviceBufferGraphics = nullptr, *mapGraphics = nullptr;//GDI+图形对象 此对象由此类管理因此此变量并不多于
 	/*莱姆(Namer)特尔(status) 菲尔德area 迷宫 梅兹maze 彼拉多build*/
-	EcologicSystem::Ecosystem ecosystem;
+	ECE::Ecosystem ecosystem;
 };
 
 #endif

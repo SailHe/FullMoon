@@ -1,5 +1,5 @@
 #include "Biology.h"
-//namespace EcologicEngine {
+namespace EcologicEngine {
 
 	AnimationManager Biology::surface;
 	int Biology::obCnt = 0;
@@ -512,7 +512,7 @@
 		}
 	}
 
-//}
+}
 
 namespace EcologicEngine {
 
@@ -523,52 +523,11 @@ namespace EcologicEngine {
 	Sprite RenderManager::displaySprite;
 	Sprite RenderManager::cameraSprite;
 
-	bool DisplayArea::shawEcologic() {
-		/*orderly有序化: 距离原点远的对象先draw 显出层次感*/
-		auto it = member.begin();
-		while (it != member.end()) {
-			auto &now = it->second;
-			//所有对象都在其DisplayArea*内行动<领地> 物品掉落 下一块地图的编号 -未编写
-			if (!now->action()) {
-				//该对象死亡 销毁死亡对象@TODO
-				auto temp = it->second;
-				it = member.erase(it);
-				//delete temp;
-				temp = nullptr;
-			}
-			else {
-				++it;
-			}
-		}
+	bool DisplayArea::run() {
 		this->drawDropItem();
 		int eventCnt = this->refresh();
 		return true;
 	}
 
-	void DisplayArea::createColony(size_t bioCount) {
-		BiologyManager temp = nullptr;
-		FOR(i, 0, bioCount) {
-			temp.reset(new People(this));
-			member.insert({ temp->getID(), temp });
-		}
-		FOR(i, 0, bioCount) {
-			temp.reset(new Monster(this));
-			member.insert({ temp->getID(), temp });
-		}
-		this->refresh();
-	}
-
-	void DisplayArea::registration() {
-		if (member.size() != this->eventSize()) {
-			_DEBUG_ERROR("初始化错误: 注册碰撞事件前 事件总数与生物总数相等!(全位置事件, 否则不利于随机位置)");
-		}
-		//注册巡逻事件
-		FOR_ALL_OBJECT(member) {
-			element.second->registration();
-		}
-		//注册传送事件
-		FOR(it, transmissionList.begin(), transmissionList.end()) {
-			sendImpactEvent(*it);
-		}
-	}
+	
 }
