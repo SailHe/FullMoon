@@ -4,6 +4,8 @@
 #include "Ecosystem.h"
 #include "../myLib/extendspace.h"
 
+namespace ECE = EcologicEngine;
+
 /*游戏控制器GameController*/
 class Game{
 	//using namespace std;
@@ -19,7 +21,7 @@ public:
 		delete mapGraphics;
 		// 释放 gdi+ 资源(但是如果在那些静态变量被释放之前就结束GDI+的话只要有用到GDI+的都会释放错误)
 		//建议在使用GDI+的最底层(Ani)加一个对象计数 若当前销毁的是最后一个对象那么就结束GDI+(同样地第一次构造的时候直接就可以自动启动)
-		//AnimationManager::graphicControl();
+		//ECE::AnimationManager::graphicControl();
 		//EndBatchDraw();
 		//cleardevice();
 		//closegraph();
@@ -50,20 +52,20 @@ private:
 		//{ mainSprite.getWidth(), mainSprite.getHeight() }
 		Constant::initialize(GP Size(mainSprite.getWidth(), mainSprite.getHeight()));
 		//mainSprite = Constant::mainCanvasSize;
-		deviceBuffer = AnimationManager::graphicControl(deviceBufferGraphics, Constant::mainCanvasSize);
+		deviceBuffer = ECE::AnimationManager::graphicControl(deviceBufferGraphics, Constant::mainCanvasSize);
 		reInitialization(hdc);
-		//AnimationManager back = AnimationManager(_T("platBack.jpg"), 1, 1);
+		//ECE::AnimationManager back = ECE::AnimationManager(_T("platBack.jpg"), 1, 1);
 		plat_ = new Bitmap({ Constant::mainCanvasSize.Width, Constant::mainCanvasSize.Height });
 		//deviceGraphics->DrawImage(plat_, mainSprite.getRect());
 		//putimage(0, 0, &plat);//图形引擎启动成功
-		WindowSprite::loading();
+		ECE::WindowSprite::loading();
 		Biology::loading();
 		/*graphics_->GetHDC();*///地图画板:关联plat的hdc的绘图对象
 		mapGraphics = GP Graphics::FromImage(plat_);
-		DisplayArea::loading(mapGraphics
+		ECE::DisplayArea::loading(mapGraphics
 			, (GP Rect(Constant::mainCanvasSize.Width / 4, Constant::mainCanvasSize.Height / 4, Constant::mainCanvasSize.Width / 2, Constant::mainCanvasSize.Height / 2))
 			, mainSprite.getCentre());
-		WindowSprite window = WindowSprite(Constant::mainCanvasSize);
+		ECE::WindowSprite window = ECE::WindowSprite(Constant::mainCanvasSize);
 		window.onLoding();
 		//deviceGraphics->DrawLine(&GP Pen(GP Color(255, 0, 0, 0)), GP Point(0, 0), GP Point(mainSprite.getWidth(), mainSprite.getHeight()));
 		deviceGraphics->DrawImage(deviceBuffer, mainSprite.getRect());
@@ -73,20 +75,20 @@ private:
 	}
 	/*类型细节测试*/
 	void testSprite(){
-		Sprite a;//普通构造+
-		Sprite b = Sprite();//普通构造+
+		ECE::Sprite a;//普通构造+
+		ECE::Sprite b = ECE::Sprite();//普通构造+
 		a.setRect(new GP Rect(20, 20, 20, 20));//右值设置
 		a.setRect(a.getRect());//引用设置
 		//a.setCentre();
 		b = a;//左值赋值
-		Sprite c = a;//左值拷贝构造+
-		Sprite d = Sprite(c);//左值拷贝构造+
+		ECE::Sprite c = a;//左值拷贝构造+
+		ECE::Sprite d = ECE::Sprite(c);//左值拷贝构造+
 		//c.setPosition(50, 50);
-		c = Sprite();//普通构造->temp->右值赋值
+		c = ECE::Sprite();//普通构造->temp->右值赋值
 		b.~Sprite();
 		b.~Sprite();//应该允许重复析构
 		//a = b;//有指针域的话应该报段错误
-		Sprite e = Sprite(Sprite(d));//左值拷贝构造->temp->右值拷贝构造
+		ECE::Sprite e = ECE::Sprite(ECE::Sprite(d));//左值拷贝构造->temp->右值拷贝构造
 		/*一共构造了7个对象 调用构造方法7次 调用析构方法9次*/
 		/*5个对象实体 2个临时对象(就是右值对象) 这之前自动析构2次+2次手动析构 这之后析构5次*/
 	}
@@ -105,10 +107,10 @@ private:
 	//设备显存  位图充当画布
 	Bitmap *deviceBuffer = nullptr;
 	Bitmap *plat_;//游戏地图实体
-	Sprite mainSprite;//窗体body
+	ECE::Sprite mainSprite;//窗体body
 	GP Graphics *deviceGraphics = nullptr, *deviceBufferGraphics = nullptr, *mapGraphics = nullptr;//GDI+图形对象 此对象由此类管理因此此变量并不多于
 	/*莱姆(Namer)特尔(status) 菲尔德area 迷宫 梅兹maze 彼拉多build*/
-	Ecosystem ecosystem;
+	EcologicSystem::Ecosystem ecosystem;
 };
 
 #endif

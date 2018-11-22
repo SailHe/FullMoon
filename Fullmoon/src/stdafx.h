@@ -53,7 +53,6 @@ SHORT GetKeyState(int nVirtKey);// virtual-key code
 */
 #define KEY_DOWN_DETECTION(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? true : false) 
 #define KEY_UP_DETECTION(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? false : true)
-typedef class Biology *BioPointer;//生物对象指针 在生物类中有使用
 
 struct MOUSEMSG
 {
