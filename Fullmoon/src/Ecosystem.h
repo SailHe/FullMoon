@@ -1,14 +1,13 @@
 #ifndef __Ecosystem_H
-#define __Ecosystem_H//引擎
+#define __Ecosystem_H
 #include"Biology.h"
 
 namespace EcologicEngine {
 
 	using BiologyManager = std::shared_ptr<Biology>;
-	//生态系统 World EcologicSystem
+	// EcologicSystem(生态系统)
 	class Ecosystem {
 	public:
-		//默认只有一个生态
 		Ecosystem() {
 			gameWindowCentreSprite = RenderManager::cameraSprite;
 			gameWindowCentreSprite.enlargement(0.50);
@@ -21,22 +20,25 @@ namespace EcologicEngine {
 			}
 		}
 
-		//加载一个生态数为size的生态
-		void loadingEcoregions(Sprite const &totalWindow, size_t size) {
+		// 加载一个生态区域数为size的生态系统 默认只有一个生态区域
+		void loading(Sprite const &totalWindow, size_t size) {
 			this->windowSize = { totalWindow.getWidth(), totalWindow.getHeight() };
 			ecoregionsIndex = 0;
 			for (int i = size; i > 0; --i) {
 				//实际每个生态有不同大小 199会出错
-				ecoregions.push_back(new DisplayArea(totalWindow, 10));
+				ecoregions.push_back(new Atlas(totalWindow));
 			}
-			createColony(10);//生物数为size
+			// 生物数为size
+			// 创建的生物群
+			createColony(10);
 			registration();
+			//创建玩家
 			if (player == nullptr) {
 				player.reset(new Player(ecoregions[ecoregionsIndex]));
 			}
 		}
 
-		//运行生态系统 gameOver(手动结束 玩家死亡)返回false
+		// 运行生态系统 gameOver(手动结束 玩家死亡)返回false
 		bool running(Bitmap *plat) {
 			size_t indexBuffer = player->getAttribute().getCurrentEcoregionsIndex();
 			if (indexBuffer != ecoregionsIndex) {
@@ -64,13 +66,18 @@ namespace EcologicEngine {
 			return player->action();
 		}
 
-		//展示此生态
+		void mouseMasege(MOUSEMSG const &C) {
+			player->setMouseCmd(C);
+		}
+
+private:
+		// 展示此生态(adj. 生态的；生态学的)
 		void shawEcologic() {
 			/*orderly有序化: 距离原点远的对象先draw 显出层次感*/
 			auto it = member.begin();
 			while (it != member.end()) {
 				auto &now = it->second;
-				//所有对象都在其DisplayArea*内行动<领地> 物品掉落 下一块地图的编号 -未编写
+				//所有对象都在其Atlas*内行动<领地> 物品掉落 下一块地图的编号 -未编写
 				if (!now->action()) {
 					//该对象死亡 销毁死亡对象@TODO
 					auto temp = it->second;
@@ -84,10 +91,10 @@ namespace EcologicEngine {
 			}
 		}
 
-		//DisplayArea::
 		void createColony(size_t bioCount) {
 			BiologyManager temp = nullptr;
 			FOR(i, 0, bioCount) {
+				// 属于生态区域ecoregions[ecoregionsIndex]
 				temp.reset(new People(ecoregions[ecoregionsIndex]));
 				member.insert({ temp->getID(), temp });
 			}
@@ -112,19 +119,16 @@ namespace EcologicEngine {
 			}*/
 		}
 
-		void mouseMasege(MOUSEMSG const &C) {
-			player->setMouseCmd(C);
-		}
-
-	private:
-		//该生态的所有成员 <body信息, 实体(多态需要用指针)> 若在栈上申请过多内存会溢出 new是在堆上申请
+		// 该生态的所有成员 <body信息, 实体(多态需要用指针)> 若在栈上申请过多内存会溢出 new是在堆上申请
 		std::map<int, BiologyManager> member;
 		GP Size windowSize;
-		ArrayList<DisplayArea *> ecoregions;//生态
-		//玩家所在生态的编号
+		// Ecoregion(生态区域)
+		ArrayList<Atlas *> ecoregions;
+		// 玩家所在生态的编号
 		size_t ecoregionsIndex = -1;
 		Sprite gameWindowCentreSprite;
-		std::shared_ptr<Player> player = nullptr;/*玩家实体*/
+		// 玩家实体
+		std::shared_ptr<Player> player = nullptr;
 	};
 
 }

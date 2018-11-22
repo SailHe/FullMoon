@@ -4,9 +4,9 @@ namespace EcologicEngine {
 	AnimationManager Biology::surface;
 	int Biology::obCnt = 0;
 	
-	Biology::Biology(EcologicEngine::DisplayArea* belongs, TYPE type, GP Size const &size)
+	Biology::Biology(EcologicEngine::Atlas* belongs, TYPE type, GP Size const &size)
 		: belongs(belongs), type(type)
-		, body(new Body(std::shared_ptr<Timestamp>(new Timestamp()), size, belongs->getBody())) {
+		, body(new Body(std::shared_ptr<Timestamp>(new Timestamp()), size, belongs->getDiaplayArea())) {
 		alloc();
 		if (DEBUG) {
 			body->setMessage(getID());
@@ -516,14 +516,14 @@ namespace EcologicEngine {
 
 namespace EcologicEngine {
 
-	AnimationManager DisplayArea::maper;
-	int DisplayArea::leftTopX = 0;// 屏幕视窗在地图中的位置
-	int DisplayArea::oldLeftTopX = 0;
-	int DisplayArea::leftTopY = 0;
+	AnimationManager Atlas::maper;
+	int Atlas::leftTopX = 0;// 屏幕视窗在地图中的位置
+	int Atlas::oldLeftTopX = 0;
+	int Atlas::leftTopY = 0;
 	Sprite RenderManager::displaySprite;
 	Sprite RenderManager::cameraSprite;
 
-	bool DisplayArea::run() {
+	bool Atlas::run() {
 		this->drawDropItem();
 		int eventCnt = this->refresh();
 		return true;

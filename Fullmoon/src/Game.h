@@ -6,7 +6,7 @@
 
 namespace ECE = EcologicEngine;
 
-/*游戏控制器GameController*/
+/*World 游戏控制器GameController*/
 class Game{
 	//using namespace std;
 public:
@@ -62,14 +62,14 @@ private:
 		ECE::Biology::loading();
 		/*graphics_->GetHDC();*///地图画板:关联plat的hdc的绘图对象
 		mapGraphics = GP Graphics::FromImage(plat_);
-		ECE::DisplayArea::loading(mapGraphics
+		ECE::Atlas::loading(mapGraphics
 			, (GP Rect(Constant::mainCanvasSize.Width / 4, Constant::mainCanvasSize.Height / 4, Constant::mainCanvasSize.Width / 2, Constant::mainCanvasSize.Height / 2))
 			, mainSprite.getCentre());
 		ECE::WindowSprite window = ECE::WindowSprite(Constant::mainCanvasSize);
 		window.onLoding();
 		//deviceGraphics->DrawLine(&GP Pen(GP Color(255, 0, 0, 0)), GP Point(0, 0), GP Point(mainSprite.getWidth(), mainSprite.getHeight()));
 		deviceGraphics->DrawImage(deviceBuffer, mainSprite.getRect());
-		ecosystem.loadingEcoregions(Constant::mainCanvasSize, 2);
+		ecosystem.loading(Constant::mainCanvasSize, 2);
 		//music();//载入完毕
 		//BeginBatchDraw();
 	}

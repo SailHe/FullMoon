@@ -3,8 +3,12 @@
 #include "TimeClock.h"
 #define _Attribute_H
 namespace EcologicEngine {
-	using TargetLocation = EcologicEngine::Sprite;//保证一定是target的非指针类型
-	using TargetType = std::shared_ptr<TargetLocation const>;//(保证一定可以使用->访问)
+
+	//保证一定是target的非指针类型
+	using TargetLocation = EcologicEngine::Sprite;
+	//(保证一定可以使用->访问)
+	using TargetType = std::shared_ptr<TargetLocation const>;
+
 	//属性包 (允许外部改变的只有EXP 和HP 其余属性初始化完成后 自动变化)
 	//允许外界查看所有推理属性 (计时器比较特殊)
 	class Attribute {

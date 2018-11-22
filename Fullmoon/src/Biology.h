@@ -2,7 +2,7 @@
 #define __Biology_H
 
 //生态区域->生物->生态系统
-#include "Ecologic.h"
+#include "Atlas.h"
 namespace EcologicEngine {
 	//生物对象指针 在生物类中有使用
 	typedef class Biology *BioPointer;
@@ -17,7 +17,7 @@ namespace EcologicEngine {
 		static AnimationManager surface;//外观
 	protected:
 		static int obCnt;//对象总数
-		DisplayArea *belongs;//所属地图
+		Atlas *belongs;//所属地图
 		ShortestPathResult shortestPathResult;
 		//导航队列: 每次会pop最前面的点作为当前目标点 然后做偏移
 		LinkedList<GP Point> navigationQueue;
@@ -43,7 +43,7 @@ namespace EcologicEngine {
 		}
 	public:
 		//(贴图对象 所属生态)
-		Biology(DisplayArea *, TYPE, GP Size const &);
+		Biology(Atlas *, TYPE, GP Size const &);
 		virtual ~Biology() {
 			body->invalidate();
 			body->getTimestamp()->invalidate();
@@ -59,7 +59,7 @@ namespace EcologicEngine {
 		void alloc() {
 			//attribute_.reset(new Attribute());
 			//targetBuffer.reset(size);//主要是宽高
-			//targetBuffer->setParent(belongs->getBody());
+			//targetBuffer->setParent(belongs->getDiaplayArea());
 			attribute_ = new Attribute(new TargetLocation(getBody()));
 		}
 		/*生物的复制 定义为繁殖行为所需 暂时先这样*/
@@ -160,7 +160,7 @@ namespace EcologicEngine {
 		virtual void registration() {
 			//do something
 		}
-		void setBelongs(DisplayArea *belongs) {
+		void setBelongs(Atlas *belongs) {
 			this->belongs = belongs;
 		}
 	protected:
@@ -302,7 +302,7 @@ namespace EcologicEngine {
 		void hold(size_t id, int cnt);
 		//计算导航队列(队列保证front是距离发起者最近的点)
 		void calcNavigationQueue(LinkedList<GP Point> &navigationQueue) {
-			static SubTwain limitSub(belongs->getBody()->rowsLimit(), belongs->getBody()->colsLimit());
+			static SubTwain limitSub(belongs->getDiaplayArea()->rowsLimit(), belongs->getDiaplayArea()->colsLimit());
 			size_t &targetId = shortestPathResult.targetId;
 			auto startCentre = getBody().getCentre();
 			SubTwain startSub = SubTwain(Constant::rowSub(startCentre.Y), Constant::colSub(startCentre.X));
@@ -351,7 +351,7 @@ namespace EcologicEngine {
 	/*人物类*/
 	class People :public Biology {
 	public:
-		People(DisplayArea* be, Sub figureSub = -1, TYPE type = PEOPLE)
+		People(Atlas* be, Sub figureSub = -1, TYPE type = PEOPLE)
 			//size 不应由外界设定 应该是根据某些属性 在贴图的基础上作出调整 因此外界只能指定贴图
 			: Biology(be, type, GP Size(19, 32)) {
 			//共5个非玩家贴图
@@ -400,7 +400,7 @@ namespace EcologicEngine {
 		bool haveMouseCmd = false;
 	public:
 		//0号贴图是玩家
-		Player(DisplayArea* be)
+		Player(Atlas* be)
 			: People(be, 0, PLAYER) {
 			editMode = OFF;
 			menuMode = OFF;
@@ -452,7 +452,7 @@ namespace EcologicEngine {
 	/*怪物类*/
 	class Monster :public Biology {
 	public:
-		Monster(DisplayArea* be, Sub figureRowSub = -1, Sub figureColSub = -1)
+		Monster(Atlas* be, Sub figureRowSub = -1, Sub figureColSub = -1)
 			:Biology(be, MONSTER, GP Size(40, 48)) {
 			//为了造成停顿效果 静止时播放上一帧
 			getBody().setStaticFrame(PAST_FRAME);

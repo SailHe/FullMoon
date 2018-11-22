@@ -61,7 +61,7 @@ void Mosaic(IMAGE *pimg, int tilesize, int startx, int starty)
 }*/
 namespace EcologicEngine {
 	/*马赛克穿越动画 第一次只有加载 没有马赛克*/
-	void DisplayArea::mosaicImage(GP Bitmap const *img, Graphics *graphics) {
+	void Atlas::mosaicImage(GP Bitmap const *img, Graphics *graphics) {
 		//GP Bitmap *timg;
 		for (int i = 2; i < 200; ++i) {
 			///*timg = *img;

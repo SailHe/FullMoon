@@ -119,16 +119,10 @@
     <ClInclude Include="src\TimeClock.h">
       <Filter>头文件\base</Filter>
     </ClInclude>
-    <ClInclude Include="src\Atlas.h">
-      <Filter>头文件\ecologicEngine</Filter>
-    </ClInclude>
     <ClInclude Include="src\Attribute.h">
       <Filter>头文件\ecologicEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\Biology.h">
-      <Filter>头文件\ecologicEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Ecologic.h">
       <Filter>头文件\ecologicEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\Ecosystem.h">
@@ -153,6 +147,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\CollisionEvent.h">
+      <Filter>头文件\ecologicEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AtlasUtil.h">
+      <Filter>头文件\ecologicEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Atlas.h">
       <Filter>头文件\ecologicEngine</Filter>
     </ClInclude>
   </ItemGroup>
