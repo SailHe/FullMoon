@@ -168,7 +168,8 @@ namespace EcologicEngine {
 
 		// 绘制地图的方法 Graphics &g
 		void draw(Image *imageBuffer) {
-			drawBuffer(*maper.getGraphics());// bg
+			// bg
+			drawBuffer(*maper.getGraphics());
 			drawCarmarkMap(*maper.getGraphics(), imageBuffer);
 		}
 
@@ -178,7 +179,6 @@ namespace EcologicEngine {
 			if (oldLeftTopX == leftTopX) {
 				// 如果屏幕没有发生卷动则直接返回
 				Logger::writeLine(_T("----------没有发生卷动------------"));
-				Logger::writeLine(_T("-------没有发生卷动第二行---------"));
 				return;
 			}
 

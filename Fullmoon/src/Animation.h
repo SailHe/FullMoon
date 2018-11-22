@@ -498,7 +498,7 @@ namespace EcologicEngine {
 				rightward(-numW);
 			}
 		}
-		//对话
+		// 在以自己为缓冲区 屏幕上方显示 带有对话框 的消息
 		void dialogue(WCHAR const *message) {
 			static int rSub = messenger.getOriginRowsSub(_T("lableBack"));
 			Sprite dialogueSprite = *this;
@@ -516,6 +516,17 @@ namespace EcologicEngine {
 				text(message + lineLen * i++, len > 0 ? lineLen : lineLen + len, dialogueSprite, 15, BLACK_);
 				dialogueSprite.downward(dialogueSprite.getHeight() / 4);
 			}
+		}
+		// 日志区域
+		void loggerMessage(WCHAR const *message) {
+			static int rSub = messenger.getOriginRowsSub(_T("statusBack"));
+			Sprite dialogueSprite = *this;
+			messenger.draw(rSub, 0, dialogueSprite.getRect());
+
+			dialogueSprite.downward(dialogueSprite.getHeight() / 8);
+			int len = lstrlenW(message);
+			dialogueSprite.rightward(dialogueSprite.getWidth() / 8);
+			text(message, dialogueSprite, 15, BLACK_);
 		}
 		/*比值条*/
 		void speValBar(int value, int fullValue, GP Color color);
@@ -710,14 +721,23 @@ namespace EcologicEngine {
 		}
 		// 输出缓冲区消息到屏幕日志指定位置
 		static void outPut() {
-			loggerSprite.text(
+			loggerSprite.setSize(
+				Constant::mainCanvasSize.Height / 2
+				, Constant::mainCanvasSize.Height / 3
+			);
+			loggerSprite.setLocation(GP Point(
+				0
+				, Constant::mainCanvasSize.Height - 200)
+			);
+			loggerSprite.loggerMessage(messageBuffer.c_str());
+			/*loggerSprite.text(
 				messageBuffer.c_str()
 				, Sprite(
 					Constant::mainCanvasSize
 					, Constant::mainCanvasSize.Width / 20
 					, Constant::mainCanvasSize.Height - 135
 				)
-				, 15, BLUE_);
+				, 15, BLUE_);*/
 		}
 
 		// 删除缓冲区最早的一行 若缓冲区超过Constant::BUFFER_MAX_BIT 则会清空
@@ -732,7 +752,7 @@ namespace EcologicEngine {
 
 			if (messageBuffer.size() > Constant::BUFFER_MAX_BIT) {
 				clear();
-				messageBuffer = _T("缓冲区过大, 已清空");
+				messageBuffer = _T("缓冲区过大, 已清空\r\n");
 			}
 		}
 

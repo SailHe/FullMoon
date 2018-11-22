@@ -219,7 +219,7 @@ namespace EcologicEngine {
 		//改变位移矢量
 		opKeyboard();
 		if (menuMode == ON) {
-			Logger::writeLine(_T("你打开了菜单"));
+			Logger::writeLine(_T("你对菜单状态进行了更改"));
 			menuStrip();
 			if (status == QUIT) {
 				return;

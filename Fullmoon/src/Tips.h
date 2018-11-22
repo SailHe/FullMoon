@@ -158,3 +158,5 @@ return *this;
 // https://zh.wikipedia.org/wiki/%E5%BC%80%E6%BA%90%E6%B8%B8%E6%88%8F
 
 // GetWindow: winuser.h (include Windows.h)
+
+// 如果编译时对应的文件没有发生更改 那么就不会被重复编译
