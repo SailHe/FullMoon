@@ -17,18 +17,18 @@ namespace EcologicEngine {
 	// 地图集(Atlas)
 	class Atlas :RenderManager, public EventImpactManager {
 	public:
-		Atlas(Sprite const &diaplayArea)
-			: diaplayArea(new Sprite(diaplayArea)), EventImpactManager(diaplayArea)
+		Atlas(Sprite const &mapArea)
+			: mapArea(new Sprite(mapArea)), EventImpactManager(mapArea)
 			, areaWindow(WindowSprite(_T("区域消息窗口")))
-			, RenderManager(diaplayArea)
+			, RenderManager(mapArea)
 			, timestamp(new Timestamp()) {
-			//如果在生成生物前没有初始化渲染地图的话那么将会引起初始化位置的错误
+			// 如果在生成生物前没有初始化渲染地图的话那么将会引起初始化位置的错误
 			loadPlat();
-			areaWindow.setRect(diaplayArea.getRect());
+			areaWindow.setRect(mapArea.getRect());
 		}
 
 		Atlas &operator=(Atlas &&rvalue) {
-			diaplayArea = std::move(rvalue.diaplayArea);
+			mapArea = std::move(rvalue.mapArea);
 			return *this;
 		}
 
@@ -60,14 +60,14 @@ namespace EcologicEngine {
 		WindowSprite &sendMessage() {
 			return areaWindow;
 		}
-		std::shared_ptr<Sprite const> getDiaplayArea() {
-			return diaplayArea;
+		std::shared_ptr<Sprite const> getMapArea() {
+			return mapArea;
 		}
 		//装载数据(屏幕显示区域的Size与摄像机相同)
 		static void loading(GP Graphics *mapGraphics, Sprite const &cameraSprite, GP Point const &displayCentre) {
 			RenderManager::cameraSprite = cameraSprite;
-			displaySprite = cameraSprite;
-			displaySprite.setCentre(displayCentre);
+			displayArea = cameraSprite;
+			displayArea.setCentre(displayCentre);
 			maper.setGraphics(mapGraphics);
 			maper.reLoad(L"map\\grass.png", 15, 16);//野外地图
 			maper.reLoad(L"map\\teleporter.png", 1, 1);//传送阵
@@ -101,13 +101,13 @@ namespace EcologicEngine {
 			return st;
 		}
 
-		//将地图移动到玩家所在的地方(渲染可见区域)
+		// 将地图移动到玩家所在的地方(渲染可见区域)
 		void renderDisplayMap() {
 			//告知世界坐标区域 渲染对应区域的地图到plat //, Bitmap *&displayPlat
 			int x, y;
 			int mapX, mapY;
 			//渲染位置(显示区域)
-			Sprite mapRenderSprite = displaySprite;
+			Sprite mapRenderSprite = displayArea;
 			auto mapIter = mapRenderSprite.pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
 
 			//渲染来源
@@ -123,9 +123,11 @@ namespace EcologicEngine {
 		}
 
 
-		//byte** MapData;// 地图数组
+		// 地图数组
+		//byte** MapData;
 
-		static int leftTopX;// 屏幕视窗在地图中的位置
+		// 屏幕视窗在地图中的位置
+		static int leftTopX;
 		static int oldLeftTopX;
 		static int leftTopY;
 
@@ -133,10 +135,14 @@ namespace EcologicEngine {
 		//byte param;
 
 		// 每张地图的属性
-		//static int cellWidth = 8; // 地图元素组成的单元格大小
-		//static int cellHeight = 8; // 地图元素组成的单元格大小
-		//int mapWNum; // 地图中x方向单元格的个数，此参数决定地图的大小，每张地图都有不同的尺寸
-		//int mapHNum; // 地图中y方向单元格的个数，此参数决定地图的大小，每张地图都有不同的尺寸
+		// 地图元素组成的单元格大小
+		//static int cellWidth = 8;
+		// 地图元素组成的单元格大小
+		//static int cellHeight = 8;
+		// 地图中x方向单元格的个数，此参数决定地图的大小，每张地图都有不同的尺寸
+		//int mapWNum;
+		// 地图中y方向单元格的个数，此参数决定地图的大小，每张地图都有不同的尺寸
+		//int mapHNum;
 
 		// 从第1张地图到第5张地图的mapWNum 96、192、64、64、96
 
@@ -167,7 +173,7 @@ namespace EcologicEngine {
 
 		// 重绘地图缓冲区的方法
 		void drawBuffer(GP Graphics &g) {
-			leftTopX = RenderManager::displaySprite.getLocation().X;
+			leftTopX = RenderManager::displayArea.getLocation().X;
 			if (oldLeftTopX == leftTopX) {// 如果屏幕没有发生卷动则直接返回
 				return;
 			}
@@ -317,13 +323,12 @@ namespace EcologicEngine {
 		}
 
 
-
 		//返回加载完成后生物的 左角位置
 		GP Point loadPlat() {
 			Sprite entrance, exit;
 			loadRenderData(entrance, exit);
 			int x, y;
-			auto it = diaplayArea->pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
+			auto it = mapArea->pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
 			//n维数组的size()就是其第n维数组的大小 即最先索引的一维 x y z分别是3 2 1维 (h w)或(x y)分别是2 1
 			while (it.iterate(x, y)) {
 				renderPlot(x, y);
@@ -333,7 +338,7 @@ namespace EcologicEngine {
 			entrance.setSize(maper.getWidthA(transferSub), maper.getHeightA(transferSub));
 			//entrance.setCentre({ 32 + 5, 24 + 5 });
 			exit.setSize(maper.getWidthA(transferSub), maper.getHeightA(transferSub));
-			//exit.setCentre({ diaplayArea->getWidth() - 32 - 5, diaplayArea->getHeight() - 24 - 25 });
+			//exit.setCentre({ mapArea->getWidth() - 32 - 5, mapArea->getHeight() - 24 - 25 });
 			std::shared_ptr<TransmissionEvent> left, right;
 			left.reset(new TransmissionEvent(timestamp, 1, 0));
 			right.reset(new TransmissionEvent(timestamp, 1, 1));
@@ -359,7 +364,7 @@ namespace EcologicEngine {
 
 		//地图阻力(以此地图为父画面的子画面 未完全实现 详见记事)
 		int block(Sprite const &nextBody) {
-			if (!diaplayArea->contains(nextBody))
+			if (!mapArea->contains(nextBody))
 				return true;//走出地图
 			else {
 				auto it = nextBody.pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
@@ -384,7 +389,7 @@ namespace EcologicEngine {
 		//寻路
 		bool pickUpFollow(Sprite const &body, Sprite const &target, ShortestPathResult &result) {
 			static Graph &parityGraph = renderData.parityGraph();
-			static SubTwain limitSub(diaplayArea->rowsLimit(), diaplayArea->colsLimit());
+			static SubTwain limitSub(mapArea->rowsLimit(), mapArea->colsLimit());
 			ArrayList<int> &dist = result.dist, &path = result.path;
 
 			//@TODO 加入体型的判断(仅仅是一个点有可能体型无法通过)
@@ -407,6 +412,15 @@ namespace EcologicEngine {
 			return parityGraph.shortestPath(startId, dist, path);
 		}
 
+		// 注册地图事件
+		void registration() {
+			// 传送事件
+			FOR(it, transmissionList.begin(), transmissionList.end()) {
+				this->sendImpactEvent(*it);
+			}
+		}
+
+		// 处理地图逻辑
 		bool run();
 
 	private:
@@ -441,11 +455,11 @@ namespace EcologicEngine {
 		// 地图资源管理员实体
 		static AnimationManager maper;
 		// 展览区
-		std::shared_ptr<Sprite const> diaplayArea;
+		std::shared_ptr<Sprite const> mapArea;
 		Colony colony;
-		//生态消息窗口
+		// 生态消息窗口
 		WindowSprite areaWindow;
-		//每次使用后会手动关闭无需析构
+		// 每次使用后会手动关闭无需析构
 		FILE *fp = nullptr;
 		// 物品实体集, 用于物品的显示(用掉落时间作为索引 只需要遍历, 增删操作 而且增删的时候不需要查重)
 		ArrayList<std::shared_ptr<Item>> dropItem;

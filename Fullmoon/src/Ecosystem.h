@@ -51,7 +51,7 @@ namespace EcologicEngine {
 			}
 			WindowSprite temp;
 			temp.drawRectangle(gameWindowCentreSprite.getRect());
-			temp.drawRectangle(RenderManager::displaySprite.getRect());
+			temp.drawRectangle(RenderManager::displayArea.getRect());
 			if (gameWindowCentreSprite.contains(player->getSprite())) {
 				//donthing
 			}
@@ -109,14 +109,12 @@ private:
 			if (member.size() != ecoregions[ecoregionsIndex]->eventSize()) {
 				_DEBUG_ERROR("初始化错误: 注册碰撞事件前 事件总数与生物总数相等!(全位置事件, 否则不利于随机位置)");
 			}
-			//注册巡逻事件
+			// 注册巡逻事件
 			FOR_ALL_OBJECT(member) {
 				element.second->registration();
 			}
-			//注册传送事件
-			/*FOR(it, transmissionList.begin(), transmissionList.end()) {
-				ecoregions[ecoregionsIndex]->sendImpactEvent(*it);
-			}*/
+			// 注册传送事件
+			ecoregions[ecoregionsIndex]->registration();
 		}
 
 		// 该生态的所有成员 <body信息, 实体(多态需要用指针)> 若在栈上申请过多内存会溢出 new是在堆上申请

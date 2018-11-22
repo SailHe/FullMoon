@@ -102,6 +102,9 @@
     <ClCompile Include="src\DrawingDemo.cpp">
       <Filter>源文件\demo</Filter>
     </ClCompile>
+    <ClCompile Include="src\Atlas.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.h">

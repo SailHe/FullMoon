@@ -59,7 +59,7 @@ namespace EcologicEngine {
 		void alloc() {
 			//attribute_.reset(new Attribute());
 			//targetBuffer.reset(size);//主要是宽高
-			//targetBuffer->setParent(belongs->getDiaplayArea());
+			//targetBuffer->setParent(belongs->getMapArea());
 			attribute_ = new Attribute(new TargetLocation(getBody()));
 		}
 		/*生物的复制 定义为繁殖行为所需 暂时先这样*/
@@ -302,7 +302,7 @@ namespace EcologicEngine {
 		void hold(size_t id, int cnt);
 		//计算导航队列(队列保证front是距离发起者最近的点)
 		void calcNavigationQueue(LinkedList<GP Point> &navigationQueue) {
-			static SubTwain limitSub(belongs->getDiaplayArea()->rowsLimit(), belongs->getDiaplayArea()->colsLimit());
+			static SubTwain limitSub(belongs->getMapArea()->rowsLimit(), belongs->getMapArea()->colsLimit());
 			size_t &targetId = shortestPathResult.targetId;
 			auto startCentre = getBody().getCentre();
 			SubTwain startSub = SubTwain(Constant::rowSub(startCentre.Y), Constant::colSub(startCentre.X));

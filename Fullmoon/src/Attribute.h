@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "TimeClock.h"
 #define _Attribute_H
+
 namespace EcologicEngine {
 
 	//保证一定是target的非指针类型

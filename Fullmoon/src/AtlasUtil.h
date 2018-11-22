@@ -142,7 +142,7 @@ namespace EcologicEngine {
 
 		static GP Point &calcDisplayLocation(GP Point &currentBodyLocation) {
 			GP Point currentCameraLocation = RenderManager::cameraSprite.getLocation();
-			static GP Point currentDisplayLocation = RenderManager::displaySprite.getLocation();
+			static GP Point currentDisplayLocation = RenderManager::displayArea.getLocation();
 			int xSub = currentBodyLocation.X - currentCameraLocation.X, ySub = currentBodyLocation.Y - currentCameraLocation.Y;
 			currentBodyLocation.X = currentDisplayLocation.X + xSub;
 			currentBodyLocation.Y = currentDisplayLocation.Y + ySub;
@@ -156,10 +156,10 @@ namespace EcologicEngine {
 			return currentBodyLocation;
 		}
 
-		//玩家的真实视野
+		// 玩家的真实视野
 		static Sprite cameraSprite;
-		//实际是屏幕的显示区域
-		static Sprite displaySprite;
+		// 实际是屏幕的显示区域(展览区)
+		static Sprite displayArea;
 	};
 
 	//事件碰撞管理器 (四叉树筛选->包围盒的初步碰撞判断->takeEffect精准判断)

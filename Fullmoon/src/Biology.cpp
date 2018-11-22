@@ -6,7 +6,7 @@ namespace EcologicEngine {
 	
 	Biology::Biology(EcologicEngine::Atlas* belongs, TYPE type, GP Size const &size)
 		: belongs(belongs), type(type)
-		, body(new Body(std::shared_ptr<Timestamp>(new Timestamp()), size, belongs->getDiaplayArea())) {
+		, body(new Body(std::shared_ptr<Timestamp>(new Timestamp()), size, belongs->getMapArea())) {
 		alloc();
 		if (DEBUG) {
 			body->setMessage(getID());
@@ -512,22 +512,4 @@ namespace EcologicEngine {
 		}
 	}
 
-}
-
-namespace EcologicEngine {
-
-	AnimationManager Atlas::maper;
-	int Atlas::leftTopX = 0;// 屏幕视窗在地图中的位置
-	int Atlas::oldLeftTopX = 0;
-	int Atlas::leftTopY = 0;
-	Sprite RenderManager::displaySprite;
-	Sprite RenderManager::cameraSprite;
-
-	bool Atlas::run() {
-		this->drawDropItem();
-		int eventCnt = this->refresh();
-		return true;
-	}
-
-	
 }
