@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "constant.h"
 #include "Game.h"
+#include "../myLib/extendspace.h"
 /**************************EsayX**********************************/
 void triangle(int x, int y, int color){
 	/*setlinecolor(color);// 设置画线颜色
@@ -160,22 +161,23 @@ void Game::demo(GP Graphics *deviceGraphics){
 	//deviceGraphics->DrawImage(&image, 0, 0);//将 image 绘制到主窗口
 	//局部绘制以及缩放
 	//myGraphics.DrawImage(&myBitmap, GP Rect(image.GetWidth(), image.GetHeight(), 300, 300), 24*4, 24*0, 23, 24, UnitPixel);
+	StandardExtend::outputDebugFormat("移动已加载的地图的视野 %d\n", 10);
 	int x = 0, y = 0;
 	while (true){
-		//a
+		//a左
 		if (KEY_DOWN_DETECTION(0x41)){
 			++x;
 		}
-		//d
+		//d右
 		if (KEY_DOWN_DETECTION(0x44)){
 			--x;
 		}
 
-		//w
+		//w上
 		if (KEY_DOWN_DETECTION(0x57)){
 			++y;
 		}
-		//s
+		//s下
 		if (KEY_DOWN_DETECTION(0x53)){
 			--y;
 		}

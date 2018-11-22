@@ -719,6 +719,17 @@ namespace EcologicEngine {
 			std::wstring temp(message);
 			messageBuffer += ((temp + _T("\r\n")).c_str());
 		}
+		static void writeLine(GP Point const &p, std::wstring const &name) {
+			writeLine((
+				name
+				+ std::wstring(_T(" (x, y): ("))
+				+ std::to_wstring(p.X)
+				+ std::wstring(_T(", "))
+				+ std::to_wstring(p.Y)
+				+ std::wstring(_T(")"))
+				).c_str()
+			);
+		}
 		// 输出缓冲区消息到屏幕日志指定位置
 		static void outPut() {
 			loggerSprite.setSize(

@@ -36,7 +36,7 @@ typedef __int64 I64;
 #define ARRAY_TEMPLATE template<class T, class Iterator>
 
 //标准扩展: 里面的许多标准输入输出方法模板(iterate系列)只建议用作测试 不建议实际使用
-namespace StandardExtend{
+namespace StandardExtend {
 	const int MAX_R = 1024;
 	const int MAX_C = 1024;
 	//using namespace std;
@@ -49,6 +49,10 @@ namespace StandardExtend{
 	DSAUTILITYEXTENSION_API char toUppercaseAscllChar(int num);
 	//'A' == 'a' == '0' ... 'J' == 'j' == '9' 以此类推
 	DSAUTILITYEXTENSION_API bool isAa0Equal(char a, char b);
+
+	// @see https://my.oschina.net/wangsifangyuan/blog/1499715
+	// 输出格式化信息到输出框
+	DSAUTILITYEXTENSION_API void outputDebugFormat(const char *strOutputString, ...);
 
 	// =====DATE
 	//计算与参数的时间差（单位：Minite）
@@ -96,13 +100,13 @@ namespace StandardExtend{
 
 	template<class T>
 	//left <= value < right  EG: inRange(minEle, element, maxEle+1); -> element [minEle, maxEle]
-	bool inRange(T left, T value, T right){
+	bool inRange(T left, T value, T right) {
 		return left <= value && value < right;
 	}
 
 	template<class Iterator, class Fun>
-	void iterate(Iterator left, Iterator right, Fun visit){
-		while (left != right){
+	void iterate(Iterator left, Iterator right, Fun visit) {
+		while (left != right) {
 			visit(left);
 			++left;
 		}
@@ -110,10 +114,10 @@ namespace StandardExtend{
 
 	template<class Iterator>
 	//coutFillChar表示填充字符 相当于printf的%02d 中的'0' coutWidth表示其中的2
-	void outPutIterable(Iterator left, Iterator right, JCE::SizeType coutWidth = 0, char coutFillChar = '\0', char intervalCahr = ' '){
+	void outPutIterable(Iterator left, Iterator right, JCE::SizeType coutWidth = 0, char coutFillChar = '\0', char intervalCahr = ' ') {
 		std::cout << std::setfill(coutFillChar);
 		int count = -1;
-		iterate(left, right, [&](Iterator left){
+		iterate(left, right, [&](Iterator left) {
 			char c = (++count == 0 ? '\0' : intervalCahr);
 			std::cout << c << std::setw(coutWidth) << *left;
 		});
@@ -122,7 +126,7 @@ namespace StandardExtend{
 
 	template<class Iterator>
 	//lineWrap 隔多少行换行 小于0 表示输出结束换行
-	void outPutIterable(Iterator left, Iterator right, JCE::SizeType coutWidth, char coutFillChar, JCE::SizeType lineWrap){
+	void outPutIterable(Iterator left, Iterator right, JCE::SizeType coutWidth, char coutFillChar, JCE::SizeType lineWrap) {
 		std::cout << std::setfill(coutFillChar);
 		if (left == right) {
 			return;
@@ -133,25 +137,25 @@ namespace StandardExtend{
 		++left;
 		int c = 1;
 		lineWrap = lineWrap < 0 ? right - left : lineWrap;
-		iterate(left, right, [&](Iterator left){
+		iterate(left, right, [&](Iterator left) {
 			++c;
-			if (c % lineWrap == 0){
+			if (c % lineWrap == 0) {
 				//最后一个
 				//std::cout << " " << std::setw(coutWidth) << *left << std::endl;
 				std::cout << std::setw(coutWidth) << *left << std::endl;
 			}
-			else if (c % lineWrap == 1){
+			else if (c % lineWrap == 1) {
 				//第一个
 				std::cout << std::setw(coutWidth) << *left;
 			}
-			else{
+			else {
 				//中间的
 				//std::cout << " " << std::setw(coutWidth) << *left;
 				std::cout << std::setw(coutWidth) << *left;
 			}
 		});
 		//最后一次没有换行这里换行
-		if (c % lineWrap != 0){
+		if (c % lineWrap != 0) {
 			puts("");
 		}
 		//取消对齐方式
@@ -160,30 +164,30 @@ namespace StandardExtend{
 
 	template<class Iterator, class Fun>
 	//lineWrapFun 返回是否换行  bool(* lineWrapFun)(Iterator left, Iterator right)
-	void outPutIterable(Iterator left, Iterator right, JCE::SizeType coutWidth, char coutFillChar, Fun lineWrapFun){
+	void outPutIterable(Iterator left, Iterator right, JCE::SizeType coutWidth, char coutFillChar, Fun lineWrapFun) {
 		std::cout << std::setfill(coutFillChar);
 		//设置left对齐
 		std::cout << std::setiosflags(std::ios::left);
 		int c = 0;
 		bool isPastWrap = false;
 		//lineWrapFun = nullptr == lineWrapFun ? [&](){return right - left; } : lineWrapFun;
-		iterate(left, right, [&](Iterator left){
+		iterate(left, right, [&](Iterator left) {
 			++c;
 			isPastWrap = lineWrapFun(left);
-			if (1 == c){//第一个
+			if (1 == c) {//第一个
 				std::cout << std::setw(coutWidth) << *left;
 			}
-			else{
+			else {
 				//中间&最后
 				std::cout << std::setw(coutWidth) << *left;
 			}
-			if (isPastWrap){//最后一个
+			if (isPastWrap) {//最后一个
 				std::cout << std::setw(coutWidth) << std::endl;
 				c = 0;
 			}
 		});
 		//最后一次没有换行这里换行
-		if (!isPastWrap){
+		if (!isPastWrap) {
 			puts("");
 		}
 		//取消对齐方式
@@ -192,31 +196,31 @@ namespace StandardExtend{
 
 
 	template<class T>
-	void outPut2DArrayList(JCE::ArrayList<JCE::ArrayList<T>> const &arrayList2D, char coutFillChar = '0', JCE::SizeType coutWidth = 2){
+	void outPut2DArrayList(JCE::ArrayList<JCE::ArrayList<T>> const &arrayList2D, char coutFillChar = '0', JCE::SizeType coutWidth = 2) {
 		JCE::SizeType rows = arrayList2D.size();
-		for (JCE::SizeType r = 0; r < rows; ++r){
+		for (JCE::SizeType r = 0; r < rows; ++r) {
 			outPutIterable(arrayList2D[r].begin(), arrayList2D[r].end(), coutWidth, coutFillChar);
 		}
 	}
 
 	template<class T>
-	void outPut2DArray(T array2D[MAX_R][MAX_C], JCE::SizeType n, JCE::SizeType coutWidth = 2, char coutFillChar = '0'){
-		for (JCE::SizeType r = 0; r < n; ++r){
+	void outPut2DArray(T array2D[MAX_R][MAX_C], JCE::SizeType n, JCE::SizeType coutWidth = 2, char coutFillChar = '0') {
+		for (JCE::SizeType r = 0; r < n; ++r) {
 			outPutIterable(array2D[r], array2D[r] + n, coutWidth, coutFillChar);
 		}
 	}
 
 	template<class T>
-	void outPut2DArrayTrangle(T array2D[MAX_R][MAX_C], JCE::SizeType n, JCE::SizeType coutWidth = 2, char coutFillChar = '0'){
-		for (JCE::SizeType r = 0; r < n; ++r){
+	void outPut2DArrayTrangle(T array2D[MAX_R][MAX_C], JCE::SizeType n, JCE::SizeType coutWidth = 2, char coutFillChar = '0') {
+		for (JCE::SizeType r = 0; r < n; ++r) {
 			outPutIterable(array2D[r], array2D[r] + r + 1, coutWidth, coutFillChar);
 		}
 	}
 
 	template<class Iterator>
-	JCE::SizeType rankStatistics(Iterator left, Iterator right){
+	JCE::SizeType rankStatistics(Iterator left, Iterator right) {
 		JCE::SizeType rank = 1;
-		iterate(left + 1, right, [&](Iterator left){
+		iterate(left + 1, right, [&](Iterator left) {
 			rank += *left == *(left - 1) ? 0 : 1;
 		});
 		return rank;
@@ -224,12 +228,12 @@ namespace StandardExtend{
 
 	//ARRAY_TEMPLATE
 	template<class T, class Iterator>
-	T minValueStatistics(Iterator left, Iterator right, T MAX_VALUE){
+	T minValueStatistics(Iterator left, Iterator right, T MAX_VALUE) {
 		T minValue = MAX_VALUE;
 		//iterate(left, right, [&](Iterator left){
 		//	minValue = min(minValue, *left);
 		//});
-		while (left != right){
+		while (left != right) {
 			minValue = min(minValue, *left);
 			++left;
 		}
@@ -237,9 +241,9 @@ namespace StandardExtend{
 	}
 
 	template<class T, class Iterator>
-	T maxValueStatistics(Iterator left, Iterator right, T MIN_VALUE){
+	T maxValueStatistics(Iterator left, Iterator right, T MIN_VALUE) {
 		T maxValue = MIN_VALUE;
-		while (left != right){
+		while (left != right) {
 			maxValue = max(maxValue, *left);
 			++left;
 		}
@@ -247,16 +251,16 @@ namespace StandardExtend{
 	}
 
 	template<class T, class Iterator>
-	T sumValueStatistics(Iterator left, Iterator right, T ZERO_VALUE){
+	T sumValueStatistics(Iterator left, Iterator right, T ZERO_VALUE) {
 		T sumValue = ZERO_VALUE;
-		iterate(left, right, [&](Iterator left){
+		iterate(left, right, [&](Iterator left) {
 			sumValue += *left;
 		});
 		return sumValue;
 	}
 
 	template<class T, class Iterator>
-	double avlValueStatistics(Iterator left, Iterator right, T ZERO_VALUE){
+	double avlValueStatistics(Iterator left, Iterator right, T ZERO_VALUE) {
 		return sumValueStatistics(left, right, ZERO_VALUE) / (double)(right - left);
 	}
 
@@ -286,7 +290,7 @@ namespace Utility {
 		inline bool operator!=(Double const &rhs) {
 			return !(*this == rhs);
 		}
-		
+
 
 		//cout<<
 		friend std::ostream &operator<<(std::ostream &os, const Double &rhs) {
@@ -343,13 +347,13 @@ namespace Utility {
 
 	class DSAUTILITYEXTENSION_API Triangle {
 	public:
-		Triangle(){}
-		Triangle(PointDouble const &p1, PointDouble const &p2, PointDouble const &p3){
+		Triangle() {}
+		Triangle(PointDouble const &p1, PointDouble const &p2, PointDouble const &p3) {
 			this->p1 = p1;
 			this->p2 = p2;
 			this->p3 = p3;
 		}
-		~Triangle(){}
+		~Triangle() {}
 
 		//返回由p1, p2, p3组成的三角形的面积
 		static double dAreaOfTriangle(PointDouble const &p1, PointDouble const &p2, PointDouble const &p3) {
@@ -486,7 +490,7 @@ namespace Utility {
 	}
 	//交换(引用实现 易爆)
 	template<class T>
-	void swapUnstable(T &a, T &b){
+	void swapUnstable(T &a, T &b) {
 		a += b;
 		b = a - b;
 		a = a - b;
@@ -657,7 +661,7 @@ namespace Utility {
 //数学扩展
 namespace MathExtend {
 	//using namespace Utility;
-	
+
 	//矩阵乘法 productMatrix = productMatrix*originMatrix(两矩阵不能相同)
 	template<class T>
 	void matrixMultiply(const Sub maxRowCol, JCE::ArrayList<JCE::ArrayList<T>> &originMatrix, JCE::ArrayList<JCE::ArrayList<T>> &productMatrix) {
@@ -908,7 +912,7 @@ namespace MathExtend {
 	// ===== Backpack(背包) DP(动态规划) 统一目的: 求解将哪些物品装入背包可使价值总和最大。
 	// 背包总容量: capacity (其余备选词汇 volume: 体积, account: 账户, amount: 总数) <==> backPack.size+1
 	// 单物品价值: value    (其余备选词汇 weight: 权重, 重量, 负重) PS 备选词可能含有歧义, 或易误解
-	
+
 	// 处理一件[零壹背包]中的物品过程 => 有N种物品和一个容量为capacity的背包backPack。每种物品只能取1次或不取(数量为1)
 	// 放入第i件物品耗费的费用是 C[i],得到的价值是 W[i].
 	template<class Numeric>

@@ -14,7 +14,7 @@ public:
 	Game(HDC hdc, GP Size const &winSize_)
 		:mainSprite(GP Rect(0, 0, winSize_.Width, winSize_.Height)){
 		initialization(hdc);
-		//demo(deviceGraphics);
+		// demo(deviceGraphics);
 	}
 	//析构->gameOver
 	~Game(){
@@ -38,7 +38,8 @@ public:
 
 		//ECE::WindowSprite().dialogue(_T("--这里可以用--"));
 		ECE::Logger::outPut();
-		ECE::Logger::eraseLine();
+		//ECE::Logger::eraseLine();
+		ECE::Logger::clear();
 
 		//drawMap(*deviceBufferGraphics);
 		return ecosystem.running(plat_);

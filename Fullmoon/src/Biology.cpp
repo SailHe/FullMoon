@@ -29,7 +29,7 @@ namespace EcologicEngine {
 
 	void Biology::shaw() {
 		//如果进入了RenderManager::cameraSprite那么将计算出绘制区域然后绘制 否则不绘制
-		if (RenderManager::cameraSprite.collide(getBody())) {
+		if (RenderManager::cameraArea.collide(getBody())) {
 
 			drawBody->setLocation(RenderManager::calcDisplayLocation(getBody()));
 

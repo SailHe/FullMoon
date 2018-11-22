@@ -8,7 +8,7 @@ namespace EcologicEngine {
 	int Atlas::oldLeftTopX = 0;
 	int Atlas::leftTopY = 0;
 	Sprite RenderManager::displayArea;
-	Sprite RenderManager::cameraSprite;
+	Sprite RenderManager::cameraArea;
 
 	bool Atlas::run() {
 		this->drawDropItem();

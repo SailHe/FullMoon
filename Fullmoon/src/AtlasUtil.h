@@ -141,7 +141,7 @@ namespace EcologicEngine {
 		}
 
 		static GP Point &calcDisplayLocation(GP Point &currentBodyLocation) {
-			GP Point currentCameraLocation = RenderManager::cameraSprite.getLocation();
+			GP Point currentCameraLocation = RenderManager::cameraArea.getLocation();
 			static GP Point currentDisplayLocation = RenderManager::displayArea.getLocation();
 			int xSub = currentBodyLocation.X - currentCameraLocation.X, ySub = currentBodyLocation.Y - currentCameraLocation.Y;
 			currentBodyLocation.X = currentDisplayLocation.X + xSub;
@@ -156,9 +156,9 @@ namespace EcologicEngine {
 			return currentBodyLocation;
 		}
 
-		// 玩家的真实视野
-		static Sprite cameraSprite;
-		// 实际是屏幕的显示区域(展览区)
+		// 玩家的真实视野(位置与玩家位置有关, 大小与展示区有关)
+		static Sprite cameraArea;
+		// 实际是屏幕的显示区域(展览区 绝对区域) 位置相当于屏幕的原点(但是绝对坐标) size就是屏幕的size
 		static Sprite displayArea;
 	};
 

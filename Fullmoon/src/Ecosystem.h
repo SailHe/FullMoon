@@ -9,9 +9,9 @@ namespace EcologicEngine {
 	class Ecosystem {
 	public:
 		Ecosystem() {
-			gameWindowCentreSprite = RenderManager::cameraSprite;
+			gameWindowCentreSprite = RenderManager::cameraArea;
 			gameWindowCentreSprite.enlargement(0.50);
-			gameWindowCentreSprite.setCentre(RenderManager::cameraSprite.getCentre());
+			gameWindowCentreSprite.setCentre(RenderManager::cameraArea.getCentre());
 		}
 
 		~Ecosystem() {
@@ -30,12 +30,14 @@ namespace EcologicEngine {
 			}
 			// 生物数为size
 			// 创建的生物群
-			createColony(10);
-			registration();
+			createColony(0);
 			//创建玩家
 			if (player == nullptr) {
 				player.reset(new Player(ecoregions[ecoregionsIndex]));
+				// 用于初始化 RenderManager::cameraArea
+				player->shaw();
 			}
+			registration();
 		}
 
 		// 运行生态系统 gameOver(手动结束 玩家死亡)返回false
@@ -59,8 +61,8 @@ namespace EcologicEngine {
 
 			}
 			//判断地图的移动
-			ecoregions[ecoregionsIndex]->renderDisplayMap();
-			ecoregions[ecoregionsIndex]->draw(plat);
+			 ecoregions[ecoregionsIndex]->renderDisplayMap();
+			//ecoregions[ecoregionsIndex]->draw(plat);
 			shawEcologic();
 			ecoregions[ecoregionsIndex]->run();
 			return player->action();
@@ -106,7 +108,8 @@ private:
 		}
 
 		void registration() {
-			if (member.size() != ecoregions[ecoregionsIndex]->eventSize()) {
+			// 非玩家 + 玩家
+			if (member.size() + 1 != ecoregions[ecoregionsIndex]->eventSize()) {
 				_DEBUG_ERROR("初始化错误: 注册碰撞事件前 事件总数与生物总数相等!(全位置事件, 否则不利于随机位置)");
 			}
 			// 注册巡逻事件

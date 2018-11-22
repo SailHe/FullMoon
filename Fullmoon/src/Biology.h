@@ -391,7 +391,8 @@ namespace EcologicEngine {
 
 	/*玩家类*/
 	class Player :public People {
-		MODE opMode;//鼠标模式/寻径模式 的开关 连击效果并不容易触发:理论上触发后5s内按上次连击的任意键都会连击
+		//鼠标模式/寻径模式 的开关 连击效果并不容易触发:理论上触发后5s内按上次连击的任意键都会连击
+		MODE opMode;
 		//地图编辑模式开关
 		MODE editMode;
 		Sub editId = 0;
@@ -414,8 +415,12 @@ namespace EcologicEngine {
 		}
 		/*角色绘图*/
 		virtual void shaw() {
-			RenderManager::cameraSprite.setCentre(getBody().getCentre());
+			RenderManager::cameraArea.setCentre(getBody().getCentre());
 			GP Point location = drawBody->getCentre();
+			Logger::writeLine(
+				RenderManager::cameraArea.getCentre()
+				, _T("摄像机中心")
+			);
 			*drawBody = getBody();
 			drawBody->setCentre(location);
 			getSurface().draw(*drawBody);

@@ -156,7 +156,7 @@ namespace EcologicEngine {
 		virtual bool takeEffect(Attribute &triggererAttribute, BoundingBox const &triggererBox) override {
 			if (getOwnerID() != triggererBox.getOwnerID() && triggererBox.toPolygon().collide(patrolCircle)) {
 				//如果进入了RenderManager::cameraSprite那么将计算出绘制区域然后绘制 否则不绘制
-				if (RenderManager::cameraSprite.collide(dialogDistrict)) {
+				if (RenderManager::cameraArea.collide(dialogDistrict)) {
 					GP Point centreC = patrolCircle.getCentre();
 					patrolCircle.setCentre(RenderManager::calcDisplayLocation(centreC));
 					dialogDistrict.drawCircle(patrolCircle);
@@ -262,7 +262,7 @@ namespace EcologicEngine {
 		//显示普通伤害效果
 		void shawAtk() {
 			//如果进入了RenderManager::cameraSprite那么将计算出绘制区域然后绘制 否则不绘制
-			if (!RenderManager::cameraSprite.collide(dialogDistrict)) {
+			if (!RenderManager::cameraArea.collide(dialogDistrict)) {
 				return;
 			}
 			dialogDistrict.setLocation(RenderManager::calcDisplayLocation(*this));
