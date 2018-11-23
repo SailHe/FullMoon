@@ -280,37 +280,40 @@ namespace EcologicEngine {
 			//return !(*this <= rhs);//不 <= 等价于 >
 			return rhs < *this;//this > rhs 等价于 rhs < this
 		}
-		// 区域差(只允许切割为两个矩形)
-		Sprite operator-=(IN Sprite const &rhs) {
-			_ASSERT_EXPR(this->getWidth() == rhs.getWidth() || this->getHeight() == rhs.getHeight(), "lhs与rhs的size之一必须相等 才能切割为两个矩形");
-			_ASSERT_EXPR(this->contains(rhs), "lhs子画面必须包涵rhs子画面");
+		
+		// 没有明确定义的运算
+		Sprite operator-=(IN Sprite const &rhs) = delete;
+		Sprite operator-(IN Sprite const &rhs) = delete;
+		Sprite operator+=(IN Sprite const &rhs) = delete;
+		Sprite operator+(IN Sprite const &rhs) = delete;
+
+		// 区域差(减去两者的交集部分) 将rhs的(left, top) 作为clipPoint(切分点)将自己切割为两个矩形 lhs, rhs必须保证有交集
+		// PS: 无法仅用(left, top) 切分出两个明确的矩形
+		// 返回自己(即差集)
+		Sprite clipByPointLeftTop(IN Sprite const &rhs) {
+			_ASSERT_EXPR(this->collide(rhs), "必须保证两者有交集");
 			// 若两个子矩形位于左右侧
-			if (this->getTop() == rhs.getTop()) {
-				this->setSize(getWidth() - rhs.getWidth(), getHeight());
-				// lhs位于rhs左侧
-				if (this->getLeft() < rhs.getLeft()) {
-					// 无需改变位置
+			// 用(left, top)表示的矩形点切割共4种情况 有两种情况LT重合
+			if (this->getLeft() == rhs.getLeft() && this->getTop() == rhs.getTop()) {
+				if (rhs.getRight() < this->getRight()) {
+					// 差集位于rhs右侧
+					this->rect_->X = rhs.getRight();
 				}
 				else {
-					this->rect_->X = rhs.rect_->GetRight();
+					this->rect_->Y = rhs.getTop() + rhs.rect_->Height;
 				}
 			}
 			else {
-				this->setSize(getWidth(), getHeight() - rhs.getHeight());
-				// lhs位于rhs下侧
-				if (this->getTop() < rhs.getTop()) {
-					// 无需改变位置
+				if (this->getTop() == rhs.getTop()) {
+					// 差集位于rhs左侧
+					this->setSize(getWidth() - rhs.getWidth(), getHeight());
 				}
 				else {
-					this->rect_->Y = rhs.rect_->GetTop() + rhs.rect_->Height;
+					// 差集位于rhs上侧
+					this->setSize(getWidth(), getHeight() - rhs.getHeight());
 				}
 			}
 			return *this;
-		}
-		Sprite operator-(IN Sprite const &rhs) const {
-			Sprite result = *this;
-			result -= rhs;
-			return result;
 		}
 
 		/*使value在区间[zero,border]内偏移 偏移量为modify 若超出范围会依据overRebound判断是否被弹回*/
@@ -359,7 +362,12 @@ namespace EcologicEngine {
 			return (getLeft() < rhs.getRight() && getTop() < rhs.getBottom() &&
 				getRight() > rhs.getLeft() && getBottom() > rhs.getTop());
 		}
-		bool isClick(int x, int y) override {
+		// 点击检测
+		inline bool isClick(int x, int y) override {
+			return contains(x, y);
+		}
+		// 包涵
+		inline bool contains(int x, int y) {
 			return getRect().Contains(x, y) == 0 ? false : true;
 		}
 		//包涵检测包涵rhs返回true

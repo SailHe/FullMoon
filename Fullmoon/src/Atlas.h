@@ -195,7 +195,7 @@ namespace EcologicEngine {
 					// do nothing
 				}
 				Sprite temp = Sprite(GP Size(Constant::GRID_CELL.Width, displayArea.getHeight()), GP Point(reRederAbsoluteX, reRederAbsoluteY));
-				unRenderArea -= temp;
+				unRenderArea.clipByPointLeftTop(temp);
 				renderDisplayMap(
 					GP Point(reRederWorldX, reRederWorldY), temp.getLocation(), temp.getSize()
 				);
@@ -216,7 +216,7 @@ namespace EcologicEngine {
 					// do nothing
 				}
 				Sprite temp = Sprite(GP Size(displayArea.getWidth(), Constant::GRID_CELL.Height), GP Point(reRederAbsoluteX, reRederAbsoluteY));
-				unRenderArea -= temp;
+				unRenderArea.clipByPointLeftTop(temp);
 				renderDisplayMap(
 					GP Point(reRederWorldX, reRederWorldY), temp.getLocation(), temp.getSize()
 				);
