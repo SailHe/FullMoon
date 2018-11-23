@@ -7,6 +7,7 @@ namespace EcologicEngine {
 	int Atlas::leftTopX = 0;
 	int Atlas::oldLeftTopX = 0;
 	int Atlas::leftTopY = 0;
+	int Atlas::oldLeftTopY = 0;
 	Sprite RenderManager::displayArea;
 	Sprite RenderManager::cameraArea;
 

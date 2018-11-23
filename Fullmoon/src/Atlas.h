@@ -3,6 +3,8 @@
 #include "AtlasUtil.h"
 #include "CollisionEvent.h"
 
+#include "../myLib/extendspace.h"
+
 namespace EcologicEngine {
 
 	// 碰撞群
@@ -102,8 +104,25 @@ namespace EcologicEngine {
 			return st;
 		}
 
-		// 将地图移动到玩家所在的地方(渲染可见区域) 效率极低
+		// 将地图移动到玩家所在的地方(渲染可见区域) 每次重绘整个视野 效率极低
 		void renderDisplayMap() {
+			renderDisplayMap(cameraArea);
+		}
+
+		// 绘制视野
+		void renderDisplayMap(Sprite cameraArea) {
+			renderDisplayMap(cameraArea.getLocation(), displayArea.getLocation(), cameraArea.getSize());
+		}
+
+		// 将指定的渲染区域的数据 渲染至指定绝对区域 两者位置不同(世界, 绝对)但大小一致 由size决定
+		void renderDisplayMap(GP Point cameraLocation, GP Point displayLocation, GP Size size) {
+
+			// @DEBUG 图片会对调试线产生遮挡 故挪至尾部
+			// maper.getGraphics()->DrawRectangle(maper.pen(255, 255), GP Rect({ displayLocation .X-1, displayLocation.Y-1}, size));
+
+			Sprite displayArea(size, displayLocation);
+			Sprite cameraArea(size, cameraLocation);
+
 			// 显示的位置(绝对坐标)
 			int absoluteX, absoluteY;
 			// 绝对坐标迭代器
@@ -112,7 +131,7 @@ namespace EcologicEngine {
 			// 渲染区域(位置跟随相机, 大小跟随展示区)
 			Sprite renderArea;
 			renderArea.setSize(displayArea.getRect().Width, displayArea.getRect().Height);
-			renderArea.setCentre(RenderManager::cameraArea.getCentre());
+			renderArea.setCentre(cameraArea.getCentre());
 			// 世界坐标: 用于(从地图数据中)确定渲染地图块值
 			int x, y;
 			auto itRenderCamera = renderArea.pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
@@ -122,6 +141,7 @@ namespace EcologicEngine {
 				itDisplayArea.iterate(absoluteX, absoluteY);
 				renderPlot(x, y, absoluteX, absoluteY);
 			}
+			maper.getGraphics()->DrawRectangle(maper.pen(255, 0, 255, 255), GP Rect(displayLocation, size));
 		}
 
 
@@ -132,22 +152,7 @@ namespace EcologicEngine {
 		static int leftTopX;
 		static int oldLeftTopX;
 		static int leftTopY;
-
-		//byte lightTime;
-		//byte param;
-
-		// 每张地图的属性
-		// 地图元素组成的单元格大小
-		//static int cellWidth = 8;
-		// 地图元素组成的单元格大小
-		//static int cellHeight = 8;
-		// 地图中x方向单元格的个数，此参数决定地图的大小，每张地图都有不同的尺寸
-		//int mapWNum;
-		// 地图中y方向单元格的个数，此参数决定地图的大小，每张地图都有不同的尺寸
-		//int mapHNum;
-
-		// 从第1张地图到第5张地图的mapWNum 96、192、64、64、96
-
+		static int oldLeftTopY;
 		// 缓冲区图片尺寸
 		int w = RenderManager::cameraArea.getWidth(), h = RenderManager::cameraArea.getHeight();
 		// 屏幕分割点，用于在屏幕上进行选区，取值为(0,w]
@@ -169,99 +174,74 @@ namespace EcologicEngine {
 
 		// 绘制地图的方法 Graphics &g
 		void draw(Image *imageBuffer) {
+			static bool firstDraw = true;
 			setScreenMode();
-			// bg
-			drawBuffer(*maper.getGraphics());
-			drawCarmarkMap(*maper.getGraphics(), imageBuffer);
+			if (firstDraw) {
+				renderDisplayMap();
+				firstDraw = false;
+			}
+			else {
+				drawBuffer(*maper.getGraphics());
+				// drawCarmarkMap(*maper.getGraphics(), imageBuffer);
+			}
 		}
 
 		// 绘制缓冲区中选区的地图
 		void drawClipBuffer(GP Graphics &g) {
-
-			// 求出起始格子的索引号
-			// 计算y方向（纵向）的起始地图单元格索引
-			int iStart = 0;
-
-			int jStart = 0;
-			// 向右
-			if (leftTopX - oldLeftTopX > 0) {
-				// 计算x方向（横向）的起始地图单元格索引
-				jStart = (leftTopX + w) / Constant::GRID_CELL.Width;
-			}
-			// 向左
-			else if (leftTopX - oldLeftTopX < 0) {
-				jStart = leftTopX / Constant::GRID_CELL.Width;
-			}
-
-			// 求出绘制格子的y方向数目和x方向数目
-			// 纵向（y方向）可以显示的地图单元格数目
-			int iNum = 21;
-			// 横向（x方向）可以显示的地图单元格数目
-			int jNum = 1;
-
-			// 求出在缓冲区的绘制起始点的坐标
-			bufDrawX = bufClipX / Constant::GRID_CELL.Width * Constant::GRID_CELL.Width;
-
-			// 根据上一次的绘制情况，修正索引号
-			if (oldBufClipX / Constant::GRID_CELL.Width != bufClipX / Constant::GRID_CELL.Width) {
-				// 向右
-				if (leftTopX - oldLeftTopX > 0) {
-					jStart -= 1;
-					jNum += 1;
-					bufDrawX -= Constant::GRID_CELL.Width;
-					// System.out.println("修正");
-				}
-				else if (leftTopX - oldLeftTopX < 0) {
-					// 向左
-					// jStart+=1;
-					jNum += 1;
-
-				}
-
-			}
-			SubTwain subs = renderData.getLimitSub();
-			// System.out.println(jStart);
-			// System.out.println(bufDrawX);
-			// 防止数组越界
-			if (iStart + iNum >= subs.r) {
-				// Y轴方向修正
-				iNum = subs.r - 1 - iStart;
-			}
-			if (jStart + jNum >= subs.c) {
-				// X轴方向修正
-				jNum = subs.c - 1 - jStart;
-			}
-
-			// 使用双缓冲绘制地图
-			for (int i = iStart; i <= iStart + iNum; i++) {
-				for (int j = jStart; j <= jStart + jNum; j++) {
-					// 双循环遍历整个地图数组
-					// 地图数组中元素大于等于０表示存在图块
-					if (renderData.getVertexValue(i, j) >= 0) {
-						//maper.draw(renderData.getVertexValue(Constant::rowSub(y), Constant::colSub(x)), Sprite(Constant::GRID_CELL, mapX, mapY));
-						renderPlot(
-							// 用-jStart修正成为屏幕内坐标X
-							(j - jStart) * Constant::GRID_CELL.Width + bufDrawX,
-							// 用-iStart修正成为屏幕内坐标Y
-							(i - iStart) * Constant::GRID_CELL.Height
-						);
-					}
-				}
-			}
-			// System.out.println("========================");
+			
 		}
 
 		// 重绘地图缓冲区的方法
 		void drawBuffer(GP Graphics &g) {
-			//leftTopX = RenderManager::cameraSprite.getLocation().X;
 			if (oldLeftTopX == leftTopX) {
-				// 如果屏幕没有发生卷动则直接返回
-				return;
+				// 屏幕没有发生横向卷动
 			}
 			else {
-				//Logger::clear();
-				Logger::writeLine(_T("----------发生卷动------------"));
+				int reRederWorldX = cameraArea.getLocation().X, reRederWorldY = cameraArea.getLocation().Y;
+				int reRederAbsoluteX = displayArea.getLocation().X, reRederAbsoluteY = displayArea.getLocation().Y;
+				// 向右
+				if (leftTopX - oldLeftTopX > 0) {
+					reRederWorldX += cameraArea.getWidth() - Constant::GRID_CELL.Width;
+					reRederAbsoluteX += displayArea.getWidth() - Constant::GRID_CELL.Width;
+				}
+				// 向左
+				else if (leftTopX - oldLeftTopX < 0) {
+					// do nothing
+				}
+				renderDisplayMap(
+					GP Point(reRederWorldX, reRederWorldY)
+					, GP Point(reRederAbsoluteX, reRederAbsoluteY)
+					, GP Size(Constant::GRID_CELL.Width, displayArea.getHeight())
+				);
 			}
+
+			if (oldLeftTopY == leftTopY) {
+				// 屏幕没有发生纵向卷动
+			}
+			else {
+				int reRederWorldX = cameraArea.getLocation().X, reRederWorldY = cameraArea.getLocation().Y;
+				int reRederAbsoluteX = displayArea.getLocation().X, reRederAbsoluteY = displayArea.getLocation().Y;
+				// 向下
+				if (leftTopY - oldLeftTopY > 0) {
+					reRederWorldY += cameraArea.getHeight() - Constant::GRID_CELL.Height;
+					reRederAbsoluteY += displayArea.getHeight() - Constant::GRID_CELL.Height;
+				}
+				// 向上
+				else if (leftTopY - oldLeftTopY < 0) {
+					// do nothing
+				}
+				renderDisplayMap(
+					GP Point(reRederWorldX, reRederWorldY)
+					, GP Point(reRederAbsoluteX, reRederAbsoluteY)
+					, GP Size(displayArea.getWidth(), Constant::GRID_CELL.Height)
+				);
+			}
+
+			//drawClipBuffer(*maper.getGraphics());
+			oldLeftTopX = leftTopX;
+			oldLeftTopY = leftTopY;
+			return;
+
 
 			// bufClipX缓冲区分割点，和屏幕分割点有一定的关系，取值为[0,w)
 			bufClipX += leftTopX - oldLeftTopX;
@@ -274,9 +254,15 @@ namespace EcologicEngine {
 				bufClipX -= w;
 			}
 
+			Logger::writeLine((std::wstring(_T("缓冲切割点位置"))
+				+ std::to_wstring(bufClipX)).c_str());
+			StandardExtend::outputDebugFormat(std::string("切割x=" + std::to_string(bufClipX)).c_str());
+			StandardExtend::outputDebugFormat(std::string("玩家中心x=" + std::to_string(cameraArea.getCentre().X) + "\n\r").c_str());
+			OutputDebugString((std::wstring(_T("两次切割点的差距=")) + std::to_wstring(abs(bufClipX - oldBufClipX))
+				+ _T("\r\n")).c_str());
 			if (leftTopX - oldLeftTopX > 0) {
 				// 向右走
-				Logger::writeLine(_T("→"));
+				StandardExtend::outputDebugFormat("→\n\r");
 				if (abs(oldBufClipX - bufClipX) > 200) {
 					// oldBufClipX和bufClipX在缓冲区的两端！
 					// 设置两个选区，分别填充！
@@ -286,7 +272,7 @@ namespace EcologicEngine {
 					drawClipBuffer(*maper.getGraphics());
 				}
 				else {
-					g.SetClip(Rect(oldBufClipX, 0, abs(bufClipX - oldBufClipX), h));
+					//g.SetClip(Rect(oldBufClipX, 0, abs(bufClipX - oldBufClipX), h));
 					drawClipBuffer(*maper.getGraphics());
 
 				}
@@ -294,8 +280,7 @@ namespace EcologicEngine {
 			}
 			else {
 				// 向左走
-				Logger::writeLine(_T("←"));
-				OutputDebugString(_T("<\r\n"));
+				StandardExtend::outputDebugFormat("←\n\r");
 				if (abs(oldBufClipX - bufClipX) > 200) {
 					// oldBufClipX和bufClipX在缓冲区的两端！
 					// 设置两个选区，分别填充！
@@ -305,10 +290,6 @@ namespace EcologicEngine {
 					drawClipBuffer(*maper.getGraphics());
 				}
 				else {
-					OutputDebugString((std::to_wstring(bufClipX)
-						+ _T("\r\n")).c_str());
-					OutputDebugString((std::to_wstring(abs(bufClipX - oldBufClipX))
-						+ _T("\r\n")).c_str());
 					g.SetClip(Rect(bufClipX, 0, abs(bufClipX - oldBufClipX), h));
 					drawClipBuffer(*maper.getGraphics());
 				}
@@ -322,47 +303,9 @@ namespace EcologicEngine {
 
 		//摄像机算法
 		void setScreenMode() {
-			//BOSS战锁屏算法
-			// screenLock();
-
-			if (true) {
-				// 设定主角在屏幕内的显示位置(postionX,postionY)（定义为屏幕的预设点）,
-				// 屏幕中的此位置(postionX,postionY)无限地接近主角在屏幕中的位置
-				int postionX = displayArea.getWidth() / 2;
-				//			final int postionY = GameCanvas.HEIGHT/ 2;
-
-				// 首先根据主角坐标来修正leftTopX值 (此处相机的位置是可视区域大小 其中心点是主角位置的中心点)
-				leftTopX = cameraArea.getCentre().X - postionX;
-				//			leftTopY = y - postionY;
-
-				// 然后计算屏幕边缘，防止屏幕左右出现黑边
-				// 当屏幕的左边小于地图时，取地图最左边即0
-				leftTopX = max(0, leftTopX);
-
-				Logger::writeLine(
-					mapArea->getCentre()
-					, _T("地图中心")
-				);
-				Logger::writeLine(
-					mapArea->getLocation()
-					, _T("地图左角")
-				);
-
-				Logger::writeLine(
-					displayArea.getCentre()
-					, _T("展览区中心")
-				);
-				Logger::writeLine(
-					displayArea.getLocation()
-					, _T("展览区左角")
-				);
-
-				// 当屏幕的右侧大于地图的总宽度时，取地图的最右变的坐标为屏幕的最右变，再用这个数值减掉屏幕宽即得到leftTopX
-				leftTopX = min(leftTopX, mapArea->getWidth() * Constant::GRID_CELL.Width - Constant::mainCanvasSize.Width);
-
-				//			leftTopY = Math.max(0, leftTopY);
-				//			leftTopY = Math.min(leftTopY, mapHNum * cellHeight  - GameCanvas.HEIGHT);
-			}
+			// 相机坐标来修正leftTopX值
+			leftTopX = cameraArea.getLocation().X;
+			leftTopY = cameraArea.getLocation().Y;
 		}
 
 		// 卡马克卷轴方法画地图
@@ -453,6 +396,8 @@ namespace EcologicEngine {
 			else {
 				auto it = nextBody.pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
 				int x, y;
+				// @ TODO
+				return false;
 				while (it.iterate(x, y)) {
 					int mapCellData = renderData.getVertexValue(Constant::rowSub(y), Constant::colSub(x));
 					assert(mapCellData >= 0);
@@ -512,11 +457,14 @@ namespace EcologicEngine {
 		bool run();
 
 	private:
-		//渲染x y处的地块到地图的对应位置
+		//渲染x y处的地块到地图的对应位置(x, y)
 		void renderPlot(int x, int y) {
-			maper.draw(renderData.getVertexValue(Constant::rowSub(y), Constant::colSub(x)), Sprite(Constant::GRID_CELL, x, y));
+			maper.draw(
+				renderData.getVertexValue(Constant::rowSub(y), Constant::colSub(x))
+				, Sprite(Constant::GRID_CELL, x, y)
+			);
 		}
-		//读取渲染地图数据中x y处的地块数据 渲染对应的地块图形到绝对坐标
+		//读取渲染地图数据中x y处的地块数据 渲染对应的地块图形到绝对坐标(absoluteX, absoluteY)
 		void renderPlot(int x, int y, int absoluteX, int absoluteY) {
 			if (renderData.getLimitSub().r <= Constant::rowSub(y)
 				|| renderData.getLimitSub().c <= Constant::colSub(x)
@@ -546,7 +494,7 @@ namespace EcologicEngine {
 		
 		// 地图资源管理员实体
 		static AnimationManager maper;
-		// 展览区
+		// 地图区域 (若只有一张地图 那么这个区域即代表了 世界地图)
 		std::shared_ptr<Sprite const> mapArea;
 		Colony colony;
 		// 生态消息窗口

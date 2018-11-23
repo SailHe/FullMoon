@@ -575,6 +575,7 @@ namespace EcologicEngine {
 			static GP Size sizeBuffer;
 			sizeBuffer.Width = getWidth();
 			sizeBuffer.Height = getHeight();
+			return sizeBuffer;
 		}
 		void setSize(int w, int h) {
 			rect_->Width = w, rect_->Height = h;

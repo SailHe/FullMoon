@@ -51,18 +51,19 @@ namespace EcologicEngine {
 					ecoregions[ecoregionsIndex]->mosaicTransition(plat);
 				}
 			}
-			WindowSprite temp;
-			temp.drawRectangle(gameWindowCentreSprite.getRect());
-			temp.drawRectangle(RenderManager::displayArea.getRect());
+			// WindowSprite temp;
+			// temp.drawRectangle(gameWindowCentreSprite.getRect());
+			// temp.drawRectangle(RenderManager::displayArea.getRect());
 			if (gameWindowCentreSprite.contains(player->getSprite())) {
-				//donthing
+				// do nothing
 			}
 			else {
 
 			}
-			//判断地图的移动
-			 ecoregions[ecoregionsIndex]->renderDisplayMap();
-			//ecoregions[ecoregionsIndex]->draw(plat);
+			Logger::writeLine(player->getSprite().getLocation(), _T("玩家位置"));
+			// 判断地图的移动
+			//ecoregions[ecoregionsIndex]->renderDisplayMap();
+			ecoregions[ecoregionsIndex]->draw(plat);
 			shawEcologic();
 			ecoregions[ecoregionsIndex]->run();
 			return player->action();
