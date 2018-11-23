@@ -280,6 +280,38 @@ namespace EcologicEngine {
 			//return !(*this <= rhs);//不 <= 等价于 >
 			return rhs < *this;//this > rhs 等价于 rhs < this
 		}
+		// 区域差(只允许切割为两个矩形)
+		Sprite operator-=(IN Sprite const &rhs) {
+			_ASSERT_EXPR(this->getWidth() == rhs.getWidth() || this->getHeight() == rhs.getHeight(), "lhs与rhs的size之一必须相等 才能切割为两个矩形");
+			_ASSERT_EXPR(this->contains(rhs), "lhs子画面必须包涵rhs子画面");
+			// 若两个子矩形位于左右侧
+			if (this->getTop() == rhs.getTop()) {
+				this->setSize(getWidth() - rhs.getWidth(), getHeight());
+				// lhs位于rhs左侧
+				if (this->getLeft() < rhs.getLeft()) {
+					// 无需改变位置
+				}
+				else {
+					this->rect_->X = rhs.rect_->GetRight();
+				}
+			}
+			else {
+				this->setSize(getWidth(), getHeight() - rhs.getHeight());
+				// lhs位于rhs下侧
+				if (this->getTop() < rhs.getTop()) {
+					// 无需改变位置
+				}
+				else {
+					this->rect_->Y = rhs.rect_->GetTop() + rhs.rect_->Height;
+				}
+			}
+			return *this;
+		}
+		Sprite operator-(IN Sprite const &rhs) const {
+			Sprite result = *this;
+			result -= rhs;
+			return result;
+		}
 
 		/*使value在区间[zero,border]内偏移 偏移量为modify 若超出范围会依据overRebound判断是否被弹回*/
 		template<class T, class T2> void skewing(T &value, T2 &modify, T border, T zero = 0)const {

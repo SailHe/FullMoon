@@ -78,6 +78,10 @@ private:
 		ecosystem.loading(Constant::mainCanvasSize, 2);
 		//music();//载入完毕
 		//BeginBatchDraw();
+
+		// 限制只在指定范围内绘制有效
+		deviceGraphics->SetClip(mainSprite.getRect());
+		deviceBufferGraphics->SetClip(mainSprite.getRect());
 	}
 	/*类型细节测试*/
 	void testSprite(){

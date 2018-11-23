@@ -72,9 +72,15 @@ namespace EcologicEngine {
 			displayArea = cameraArea;
 			displayArea.setCentre(displayCentre);
 			maper.setGraphics(mapGraphics);
-			maper.reLoad(L"map\\grass.png", 15, 16);//野外地图
-			maper.reLoad(L"map\\teleporter.png", 1, 1);//传送阵
-			int rSub = maper.reLoad(L"world.png", 15, 7);//野外地图2
+			//野外地图
+			maper.reLoad(L"map\\grass.png", 15, 16);
+			//传送阵
+			maper.reLoad(L"map\\teleporter.png", 1, 1);
+			//野外地图2
+			int rSub = maper.reLoad(L"world.png", 15, 7);
+
+			// 地图画板只能绘制地图区域
+			mapGraphics->SetClip(cameraArea.getRect());
 		}
 
 		void mosaicTransition(Bitmap const *plat) {
@@ -115,8 +121,8 @@ namespace EcologicEngine {
 		}
 
 		// 将指定的渲染区域的数据 渲染至指定绝对区域 两者位置不同(世界, 绝对)但大小一致 由size决定
-		void renderDisplayMap(GP Point cameraLocation, GP Point displayLocation, GP Size size) {
-
+		// 返回display区域未发生变动的区域
+		void renderDisplayMap(GP Point const &cameraLocation, GP Point const &displayLocation, GP Size const &size) {
 			// @DEBUG 图片会对调试线产生遮挡 故挪至尾部
 			// maper.getGraphics()->DrawRectangle(maper.pen(255, 255), GP Rect({ displayLocation .X-1, displayLocation.Y-1}, size));
 
@@ -153,26 +159,8 @@ namespace EcologicEngine {
 		static int oldLeftTopX;
 		static int leftTopY;
 		static int oldLeftTopY;
-		// 缓冲区图片尺寸
-		int w = RenderManager::cameraArea.getWidth(), h = RenderManager::cameraArea.getHeight();
-		// 屏幕分割点，用于在屏幕上进行选区，取值为(0,w]
-		int clipX = 0;
-		// 屏幕绘制点，用于图片缓冲区和屏幕对齐，取值为(-w,0]
-		int drawX = 0;
-		// 上一次缓冲区分割点，和屏幕分割点有一定的关系，取值为[0,w)
-		int oldBufClipX = RenderManager::cameraArea.getLocation().X;
-		// 缓冲区分割点，和屏幕分割点有一定的关系，取值为[0,w)
-		int bufClipX = oldBufClipX;
-		// 缓冲区绘制点，用于在缓冲区上绘制地图信息，取值为[0,w)，注意此数为离散值，i*cellWidth
-		int bufDrawX = 0;
-
-		// 缓冲区
-		//Image *imageBuffer = nullptr;
-		//Graphics *bg;// 缓冲区的画笔
-		//Engine eg;
-
-
-		// 绘制地图的方法 Graphics &g
+		
+		// 绘制地图的方法
 		void draw(Image *imageBuffer) {
 			static bool firstDraw = true;
 			setScreenMode();
@@ -181,18 +169,16 @@ namespace EcologicEngine {
 				firstDraw = false;
 			}
 			else {
-				drawBuffer(*maper.getGraphics());
+				drawBuffer(*maper.getGraphics(), imageBuffer);
 				// drawCarmarkMap(*maper.getGraphics(), imageBuffer);
 			}
 		}
 
-		// 绘制缓冲区中选区的地图
-		void drawClipBuffer(GP Graphics &g) {
-			
-		}
-
-		// 重绘地图缓冲区的方法
-		void drawBuffer(GP Graphics &g) {
+		//drawClipBuffer
+		// 绘制更新的地图 并计算原地图中未更新的区域
+		void drawUpdateMap(GP Rect &unUpdateArea) {
+			static Sprite unRenderArea;
+			unRenderArea = displayArea;
 			if (oldLeftTopX == leftTopX) {
 				// 屏幕没有发生横向卷动
 			}
@@ -208,13 +194,12 @@ namespace EcologicEngine {
 				else if (leftTopX - oldLeftTopX < 0) {
 					// do nothing
 				}
+				Sprite temp = Sprite(GP Size(Constant::GRID_CELL.Width, displayArea.getHeight()), GP Point(reRederAbsoluteX, reRederAbsoluteY));
+				unRenderArea -= temp;
 				renderDisplayMap(
-					GP Point(reRederWorldX, reRederWorldY)
-					, GP Point(reRederAbsoluteX, reRederAbsoluteY)
-					, GP Size(Constant::GRID_CELL.Width, displayArea.getHeight())
+					GP Point(reRederWorldX, reRederWorldY), temp.getLocation(), temp.getSize()
 				);
 			}
-
 			if (oldLeftTopY == leftTopY) {
 				// 屏幕没有发生纵向卷动
 			}
@@ -230,75 +215,42 @@ namespace EcologicEngine {
 				else if (leftTopY - oldLeftTopY < 0) {
 					// do nothing
 				}
+				Sprite temp = Sprite(GP Size(displayArea.getWidth(), Constant::GRID_CELL.Height), GP Point(reRederAbsoluteX, reRederAbsoluteY));
+				unRenderArea -= temp;
 				renderDisplayMap(
-					GP Point(reRederWorldX, reRederWorldY)
-					, GP Point(reRederAbsoluteX, reRederAbsoluteY)
-					, GP Size(displayArea.getWidth(), Constant::GRID_CELL.Height)
+					GP Point(reRederWorldX, reRederWorldY), temp.getLocation(), temp.getSize()
 				);
 			}
-
-			//drawClipBuffer(*maper.getGraphics());
+			unUpdateArea = unRenderArea.getRect();
 			oldLeftTopX = leftTopX;
 			oldLeftTopY = leftTopY;
-			return;
+		}
 
-
-			// bufClipX缓冲区分割点，和屏幕分割点有一定的关系，取值为[0,w)
-			bufClipX += leftTopX - oldLeftTopX;
-			if (bufClipX < 0) {
-				// 向左走的修正
-				bufClipX += w;
-			}
-			else if (bufClipX > w) {
-				// 向右走的修正
-				bufClipX -= w;
-			}
-
-			Logger::writeLine((std::wstring(_T("缓冲切割点位置"))
+		// 重绘地图缓冲区的方法
+		void drawBuffer(GP Graphics &g, Image *imageBuffer) {
+			/*Logger::writeLine((std::wstring(_T("缓冲切割点位置"))
 				+ std::to_wstring(bufClipX)).c_str());
 			StandardExtend::outputDebugFormat(std::string("切割x=" + std::to_string(bufClipX)).c_str());
 			StandardExtend::outputDebugFormat(std::string("玩家中心x=" + std::to_string(cameraArea.getCentre().X) + "\n\r").c_str());
 			OutputDebugString((std::wstring(_T("两次切割点的差距=")) + std::to_wstring(abs(bufClipX - oldBufClipX))
-				+ _T("\r\n")).c_str());
-			if (leftTopX - oldLeftTopX > 0) {
-				// 向右走
-				StandardExtend::outputDebugFormat("→\n\r");
-				if (abs(oldBufClipX - bufClipX) > 200) {
-					// oldBufClipX和bufClipX在缓冲区的两端！
-					// 设置两个选区，分别填充！
-					g.SetClip(Rect(oldBufClipX, 0, abs(oldBufClipX - w), h));
-					drawClipBuffer(*maper.getGraphics());
-					g.SetClip(Rect(0, 0, bufClipX, h));
-					drawClipBuffer(*maper.getGraphics());
-				}
-				else {
-					//g.SetClip(Rect(oldBufClipX, 0, abs(bufClipX - oldBufClipX), h));
-					drawClipBuffer(*maper.getGraphics());
+				+ _T("\r\n")).c_str());*/
 
-				}
+			GP Rect unUpdateArea;
+			drawUpdateMap(unUpdateArea);
 
-			}
-			else {
-				// 向左走
-				StandardExtend::outputDebugFormat("←\n\r");
-				if (abs(oldBufClipX - bufClipX) > 200) {
-					// oldBufClipX和bufClipX在缓冲区的两端！
-					// 设置两个选区，分别填充！
-					g.SetClip(Rect(0, 0, oldBufClipX, h));
-					drawClipBuffer(*maper.getGraphics());
-					g.SetClip(Rect(bufClipX, 0, abs(bufClipX - w), h));
-					drawClipBuffer(*maper.getGraphics());
-				}
-				else {
-					g.SetClip(Rect(bufClipX, 0, abs(bufClipX - oldBufClipX), h));
-					drawClipBuffer(*maper.getGraphics());
-				}
-			}
+			g.DrawImage(&Bitmap(_T("res/platBack.jpg")), unUpdateArea);
+			
+			/*// 设置无需重绘的区域为地图有效区
+			g.SetClip(displayArea.getRect());
 
-			g.SetClip(Rect(0, 0, w, h));
+			// 贴上不需要重绘的区域
+			g.DrawImage(imageBuffer, displayArea.getLocation());
 
-			oldBufClipX = bufClipX;
+			// 这是将一张图片以地图区左角为原点绘制的例子
+			// g.DrawImage(&Bitmap(_T("res/logo.png")), displayArea.getLocation());
 
+			// 恢复
+			g.SetClip(displayArea.getRect());*/
 		}
 
 		//摄像机算法
@@ -310,7 +262,7 @@ namespace EcologicEngine {
 
 		// 卡马克卷轴方法画地图
 		void drawCarmarkMap(GP Graphics &g, Image *imageBuffer) {
-
+			/*
 			// clipX屏幕分割点，用于在屏幕上进行选区，取值为(0,w]
 			clipX += oldLeftTopX - leftTopX;
 			if (clipX <= 0) {
@@ -346,7 +298,7 @@ namespace EcologicEngine {
 
 			g.SetClip(Rect(0, 0, Constant::mainCanvasSize.Width, Constant::mainCanvasSize.Height), CombineModeReplace);
 
-			oldLeftTopX = leftTopX;
+			oldLeftTopX = leftTopX;*/
 		}
 
 
