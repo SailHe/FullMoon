@@ -14,7 +14,7 @@ public:
 	Game(HDC hdc, GP Size const &winSize_)
 		:mainSprite(GP Rect(0, 0, winSize_.Width, winSize_.Height)){
 		initialization(hdc);
-		// demo(deviceGraphics);
+		//demo(deviceGraphics);
 	}
 	//Îö¹¹->gameOver
 	~Game(){

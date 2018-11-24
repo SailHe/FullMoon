@@ -108,7 +108,23 @@ void cachedBitmap(GP Graphics &graphics){
 		graphics.DrawCachedBitmap(&cBitmap, j, 150 + j / 2);
 }
 
+VOID Example_SetClip2(HDC hdc)
+{
+	Graphics graphics(hdc);
+
+	// Create a Region object, and get its handle.
+	Region region(Rect(0, 0, 100, 100));
+	HRGN hRegion = region.GetHRGN(&graphics);
+
+	// Set the clipping region with hRegion.
+	graphics.SetClip(hRegion);
+
+	// Fill a rectangle to demonstrate the clipping region.
+	graphics.FillRectangle(&SolidBrush(Color(255, 0, 0, 0)), 0, 0, 500, 500);
+}
+
 void Game::demo(GP Graphics *deviceGraphics){
+	//Example_SetClip2(GetDC(GetActiveWindow()));
 	//White, Green
 	deviceGraphics->Clear(Color::Black);
 	GP Graphics &myGraphics = *deviceGraphics;
@@ -144,10 +160,14 @@ void Game::demo(GP Graphics *deviceGraphics){
 		, Constant::mainCanvasSize.Width / 2, Constant::mainCanvasSize.Height / 2);
 	Region myRegion(rect);
 	myGraphics.DrawRectangle(&myPen, 20, 30, 100, 50);
-	//裁剪绘制
+	myGraphics.DrawRectangle(&myPen, rect);
+	myGraphics.DrawLine(&myPen, 0, 0, Constant::mainCanvasSize.Width, Constant::mainCanvasSize.Height);
+	//裁剪绘制 所有由给定的 Graphics 对象进行的绘制都限制在 Graphics 对象的剪辑区域中。
+	//设定剪切区域
 	myGraphics.SetClip(&myRegion, CombineModeReplace);
+	//myGraphics.ExcludeClip(rect);
 	//绘制一条被矩形裁剪的直线
-	myGraphics.DrawLine(&myPen, 0, 0, 200, 200);
+	myGraphics.DrawLine(&myPen, Constant::mainCanvasSize.Width, 0, 0, Constant::mainCanvasSize.Height);
 
 	GP GraphicsPath graphicsPath;
 	GP Matrix matrix;

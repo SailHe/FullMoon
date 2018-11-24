@@ -150,10 +150,6 @@ namespace EcologicEngine {
 			maper.getGraphics()->DrawRectangle(maper.pen(255, 0, 255, 255), GP Rect(displayLocation, size));
 		}
 
-
-		// 地图数组
-		//byte** MapData;
-
 		// 屏幕视窗在地图中的位置
 		static int leftTopX;
 		static int oldLeftTopX;
@@ -161,7 +157,7 @@ namespace EcologicEngine {
 		static int oldLeftTopY;
 		
 		// 绘制地图的方法
-		void draw(Image *imageBuffer) {
+		void draw(Bitmap *imageBuffer) {
 			static bool firstDraw = true;
 			setScreenMode();
 			if (firstDraw) {
@@ -174,11 +170,10 @@ namespace EcologicEngine {
 			}
 		}
 
-		//drawClipBuffer
+		// drawClipBuffer
 		// 绘制更新的地图 并计算原地图中未更新的区域
-		void drawUpdateMap(GP Rect &unUpdateArea) {
-			static Sprite unRenderArea;
-			unRenderArea = displayArea;
+		void drawUpdateMap(Sprite &unUpdateArea) {
+			unUpdateArea = displayArea;
 			if (oldLeftTopX == leftTopX) {
 				// 屏幕没有发生横向卷动
 			}
@@ -195,7 +190,7 @@ namespace EcologicEngine {
 					// do nothing
 				}
 				Sprite temp = Sprite(GP Size(Constant::GRID_CELL.Width, displayArea.getHeight()), GP Point(reRederAbsoluteX, reRederAbsoluteY));
-				unRenderArea.clipByPointLeftTop(temp);
+				unUpdateArea.clipByPointLeftTop(temp);
 				renderDisplayMap(
 					GP Point(reRederWorldX, reRederWorldY), temp.getLocation(), temp.getSize()
 				);
@@ -216,41 +211,50 @@ namespace EcologicEngine {
 					// do nothing
 				}
 				Sprite temp = Sprite(GP Size(displayArea.getWidth(), Constant::GRID_CELL.Height), GP Point(reRederAbsoluteX, reRederAbsoluteY));
-				unRenderArea.clipByPointLeftTop(temp);
+				unUpdateArea.clipByPointLeftTop(temp);
 				renderDisplayMap(
 					GP Point(reRederWorldX, reRederWorldY), temp.getLocation(), temp.getSize()
 				);
 			}
-			unUpdateArea = unRenderArea.getRect();
 			oldLeftTopX = leftTopX;
 			oldLeftTopY = leftTopY;
 		}
 
-		// 重绘地图缓冲区的方法
-		void drawBuffer(GP Graphics &g, Image *imageBuffer) {
+		// 重绘地图缓冲区的方法 Image 没有可用的方法
+		void drawBuffer(GP Graphics &g, Bitmap *imageBuffer) {
 			/*Logger::writeLine((std::wstring(_T("缓冲切割点位置"))
 				+ std::to_wstring(bufClipX)).c_str());
 			StandardExtend::outputDebugFormat(std::string("切割x=" + std::to_string(bufClipX)).c_str());
 			StandardExtend::outputDebugFormat(std::string("玩家中心x=" + std::to_string(cameraArea.getCentre().X) + "\n\r").c_str());
 			OutputDebugString((std::wstring(_T("两次切割点的差距=")) + std::to_wstring(abs(bufClipX - oldBufClipX))
 				+ _T("\r\n")).c_str());*/
+			// 原地图的绝对绘制坐标
+			int abBufRenderX = oldLeftTopX- leftTopX, abBufRenderY = oldLeftTopY - leftTopY;
+			g.DrawImage(imageBuffer, abBufRenderX, abBufRenderY);
+			static Sprite renderArea;
+			// 更新时没有的重渲染区域是需要渲染的区域
+			drawUpdateMap(renderArea);
+			// 计算原地图中的可重用区域
+			// 将可重用区域渲染到渲染区
 
-			GP Rect unUpdateArea;
-			drawUpdateMap(unUpdateArea);
-
-			g.DrawImage(&Bitmap(_T("res/platBack.jpg")), unUpdateArea);
+			//g.DrawImage(&Bitmap(_T("res/platBack.jpg")), unUpdateArea.getRect());
 			
-			/*// 设置无需重绘的区域为地图有效区
-			g.SetClip(displayArea.getRect());
-
+			// 设置无需重绘的区域为地图有效区
+			//g.SetClip(unUpdateArea.getRect());
 			// 贴上不需要重绘的区域
-			g.DrawImage(imageBuffer, displayArea.getLocation());
+			/*auto temp = imageBuffer->Clone(displayArea.tmpRectF(), PixelFormatDontCare);
+			g.DrawImage(temp, renderArea.getRect());
+			delete temp;
+			temp = nullptr;*/
 
 			// 这是将一张图片以地图区左角为原点绘制的例子
 			// g.DrawImage(&Bitmap(_T("res/logo.png")), displayArea.getLocation());
 
 			// 恢复
-			g.SetClip(displayArea.getRect());*/
+			//g.SetClip(displayArea.getRect());
+			//GP Region resultRegion;
+			//g.GetClip(&resultRegion);
+			//resultRegion.GetData();
 		}
 
 		//摄像机算法
@@ -348,8 +352,6 @@ namespace EcologicEngine {
 			else {
 				auto it = nextBody.pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
 				int x, y;
-				// @ TODO
-				return false;
 				while (it.iterate(x, y)) {
 					int mapCellData = renderData.getVertexValue(Constant::rowSub(y), Constant::colSub(x));
 					assert(mapCellData >= 0);
