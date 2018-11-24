@@ -35,7 +35,7 @@ namespace EcologicEngine {
 			if (player == nullptr) {
 				player.reset(new Player(ecoregions[ecoregionsIndex]));
 				// 用于初始化 RenderManager::cameraArea
-				player->shaw();
+				player->action();
 			}
 			registration();
 		}
@@ -60,10 +60,14 @@ namespace EcologicEngine {
 			else {
 
 			}
-			Logger::writeLine(player->getSprite().getLocation(), _T("玩家位置"));
+			clock_t st = clock();
 			// 判断地图的移动
 			//ecoregions[ecoregionsIndex]->renderDisplayMap();
 			ecoregions[ecoregionsIndex]->draw(plat);
+			StandardExtend::outputDebugFormat("地图绘制耗时: %f\n\r", StandardExtend::calcDiffClock(st));
+			StandardExtend::outputDebugFormat("摄像机中心: (%d, %d)\n\r", RenderManager::cameraArea.getCentre().X, RenderManager::cameraArea.getCentre().Y);
+			StandardExtend::outputDebugFormat("玩家位置(左角): (%d, %d)\n\r", player->getSprite().getLocation().X, player->getSprite().getLocation().Y);
+			Logger::writeLine(player->getSprite().getLocation(), _T("玩家位置"));
 			shawEcologic();
 			ecoregions[ecoregionsIndex]->run();
 			return player->action();

@@ -111,8 +111,28 @@ namespace EcologicEngine {
 		}
 
 		// 将地图移动到玩家所在的地方(渲染可见区域) 每次重绘整个视野 效率极低
-		void renderDisplayMap() {
+		/*void renderDisplayMap() {
 			renderDisplayMap(cameraArea);
+		}*/
+		void renderDisplayMap() {
+			// 显示的位置(绝对坐标)
+			int absoluteX, absoluteY;
+			// 绝对坐标迭代器
+			auto itDisplayArea = displayArea.pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
+
+			// 渲染区域(位置跟随相机, 大小跟随展示区)
+			Sprite renderArea;
+			renderArea.setSize(displayArea.getRect().Width, displayArea.getRect().Height);
+			renderArea.setCentre(RenderManager::cameraArea.getCentre());
+			// 世界坐标: 用于(从地图数据中)确定渲染地图块值
+			int x, y;
+			auto itRenderCamera = renderArea.pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
+			// n维数组的size()就是其第n维数组的大小
+			// 即最先索引的一维 x y z分别是3 2 1维 (h w)或(x y)分别是2 1
+			while (itRenderCamera.iterate(x, y)) {
+				itDisplayArea.iterate(absoluteX, absoluteY);
+				renderPlot(x, y, absoluteX, absoluteY);
+			}
 		}
 
 		// 绘制视野
@@ -159,8 +179,12 @@ namespace EcologicEngine {
 		// 绘制地图的方法
 		void draw(Bitmap *imageBuffer) {
 			static bool firstDraw = true;
-			setScreenMode();
+			// 相机坐标来修正leftTopX值
+			leftTopX = cameraArea.getLocation().X;
+			leftTopY = cameraArea.getLocation().Y;
+			//renderDisplayMap();return;
 			if (firstDraw) {
+				//renderDisplayMap(cameraArea.getLocation(), displayArea.getLocation(), cameraArea.getSize());
 				renderDisplayMap();
 				firstDraw = false;
 			}
@@ -257,13 +281,6 @@ namespace EcologicEngine {
 			//resultRegion.GetData();
 		}
 
-		//摄像机算法
-		void setScreenMode() {
-			// 相机坐标来修正leftTopX值
-			leftTopX = cameraArea.getLocation().X;
-			leftTopY = cameraArea.getLocation().Y;
-		}
-
 		// 卡马克卷轴方法画地图
 		void drawCarmarkMap(GP Graphics &g, Image *imageBuffer) {
 			/*
@@ -310,12 +327,12 @@ namespace EcologicEngine {
 		GP Point loadPlat() {
 			Sprite entrance, exit;
 			loadRenderData(entrance, exit);
-			int x, y;
+			/*int x, y;
 			auto it = mapArea->pointIterator(Constant::GRID_CELL.Width, Constant::GRID_CELL.Height);
 			//n维数组的size()就是其第n维数组的大小 即最先索引的一维 x y z分别是3 2 1维 (h w)或(x y)分别是2 1
 			while (it.iterate(x, y)) {
 				renderPlot(x, y);
-			}
+			}*/
 			//传送阵所在行标 列标
 			int transferSub = 18, transferCol = 4;
 			entrance.setSize(maper.getWidthA(transferSub), maper.getHeightA(transferSub));
@@ -401,10 +418,6 @@ namespace EcologicEngine {
 			FOR(it, transmissionList.begin(), transmissionList.end()) {
 				this->sendImpactEvent(*it);
 			}
-
-			// 注册地图算法位置 根据角色的初始位置初始化 oldLeftTopX
-			setScreenMode();
-			oldLeftTopX = leftTopX;
 		}
 
 		// 处理地图逻辑

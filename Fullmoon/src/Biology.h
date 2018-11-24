@@ -417,10 +417,6 @@ namespace EcologicEngine {
 		virtual void shaw() {
 			RenderManager::cameraArea.setCentre(getBody().getCentre());
 			GP Point location = drawBody->getCentre();
-			Logger::writeLine(
-				RenderManager::cameraArea.getCentre()
-				, _T("ÉãÏñ»úÖÐÐÄ")
-			);
 			*drawBody = getBody();
 			drawBody->setCentre(location);
 			getSurface().draw(*drawBody);

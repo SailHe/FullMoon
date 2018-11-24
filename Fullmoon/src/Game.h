@@ -13,7 +13,11 @@ public:
 	//构造->gameStart
 	Game(HDC hdc, GP Size const &winSize_)
 		:mainSprite(GP Rect(0, 0, winSize_.Width, winSize_.Height)){
+		clock_t beginTime = clock();
 		initialization(hdc);
+		StandardExtend::outputDebugFormat("================\n\r");
+		StandardExtend::outputDebugFormat("初始化耗时: %f s\n\r", StandardExtend::calcDiffClock(beginTime));
+		StandardExtend::outputDebugFormat("================\n\r");
 		//demo(deviceGraphics);
 	}
 	//析构->gameOver
@@ -27,14 +31,16 @@ public:
 		//closegraph();
 	}
 	bool gameLoop(){
+		clock_t beginTime = clock();
 		static double pW = mainSprite.getWidth() / 960.0, pH = mainSprite.getHeight() / 540.0;
 		static Gdiplus::RectF drawRect(0, 0, (REAL)(mainSprite.getWidth() * pW), (REAL)(mainSprite.getHeight() * pH));
+		bool result = ecosystem.running(plat_);
 		//FlushBatchDraw();
 		deviceGraphics->DrawImage(deviceBuffer, mainSprite.getRect());
+		deviceBufferGraphics->DrawImage(plat_, mainSprite.getRect());
 		//Sleep(30);
 		//static TimeClock gameRefresh = TimeClock(1000 / 60);while (!gameRefresh.IsTimeOut());
 		//putimage(0, 0, &plat);
-		deviceBufferGraphics->DrawImage(plat_, mainSprite.getRect());
 
 		//ECE::WindowSprite().dialogue(_T("--这里可以用--"));
 		ECE::Logger::outPut();
@@ -42,7 +48,8 @@ public:
 		ECE::Logger::clear();
 
 		//drawMap(*deviceBufferGraphics);
-		return ecosystem.running(plat_);
+		StandardExtend::outputDebugFormat("帧耗时: %f s\n\r", StandardExtend::calcDiffClock(beginTime));
+		return result;
 	}
 	void mouseMasege(MOUSEMSG const &C){
 		ecosystem.mouseMasege(C);
@@ -78,7 +85,8 @@ private:
 		ecosystem.loading(Constant::mainCanvasSize, 2);
 		//music();//载入完毕
 		//BeginBatchDraw();
-
+		// 图片背景会比较卡
+		// deviceBufferGraphics->DrawImage(&Bitmap(_T("res/platBack.jpg")), mainSprite.getRect());
 		// 限制只在指定范围内绘制有效
 		deviceGraphics->SetClip(mainSprite.getRect());
 		deviceBufferGraphics->SetClip(mainSprite.getRect());
