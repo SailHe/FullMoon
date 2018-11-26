@@ -123,6 +123,9 @@ VOID Example_SetClip2(HDC hdc)
 	graphics.FillRectangle(&SolidBrush(Color(255, 0, 0, 0)), 0, 0, 500, 500);
 }
 
+// https://docs.microsoft.com/zh-cn/windows/desktop/api/_gdiplus/
+// https://docs.microsoft.com/zh-cn/windows/desktop/api/winuser/nf-winuser-getwindow
+// https://docs.microsoft.com/zh-cn/windows/desktop/api/winuser/nf-winuser-getactivewindow
 void Game::demo(GP Graphics *deviceGraphics){
 	//Example_SetClip2(GetDC(GetActiveWindow()));
 	//White, Green
