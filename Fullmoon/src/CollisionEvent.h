@@ -295,7 +295,7 @@ namespace EcologicEngine {
 		int value = 0;
 	};
 
-	/*时效性物品事件*/
+	// 时效性物品事件
 	class Item : public Message {
 		size_t ID = 0;
 		virtual bool takeEffect(Attribute &triggererAttribute, BoundingBox const &triggererBox)override {
@@ -304,14 +304,15 @@ namespace EcologicEngine {
 			return obstructEvent();
 		}
 	public:
-		//物品位置 物品编号
+		// 物品位置 物品编号
 		Item(std::shared_ptr<Timestamp> &timestamp, Sprite const &location, size_t id)
 			: Message(timestamp, GP Size(dialogDistrict.getWidthOfItem(id), dialogDistrict.getHeightOfItem(id))) {
 
-			//物品默认没有阻挡效果
+			// 物品默认没有阻挡效果
 			this->obstruct = false;
 			ID = id;
-			durationClock.SetDrtTime(15000);//持续15s
+			// 持续15s
+			durationClock.SetDrtTime(15000);
 			setLocation(location);
 			dialogDistrict.setSize(dialogDistrict.getWidthOfItem(id), dialogDistrict.getHeightOfItem(id));
 			dialogDistrict.setLocation(location);
@@ -321,7 +322,7 @@ namespace EcologicEngine {
 		void shawItem() {
 			static GP Point location;
 			getRect().GetLocation(&location);
-			dialogDistrict.drawItem(ID, location);
+			dialogDistrict.drawItem(ID, RenderManager::calcDisplayLocation(location));
 		}
 		//物品有效性检查
 		virtual bool isValid()override {
