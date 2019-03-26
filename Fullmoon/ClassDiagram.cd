@@ -1,252 +1,245 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="AnimationManager" Collapsed="true">
-    <Position X="2.75" Y="3.75" Width="1.5" />
+  <Class Name="EcologicEngine::AnimationManager" Collapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>SAAAAAADAABAAEAAAKoIEIAAAAoMBAgAAAAgAAABAAA=</HashCode>
+      <HashCode>SAAASAAKAQBAAEAAAKoIEIAAAAoIQAgAAAAyAAABAAA=</HashCode>
       <FileName>src\Animation.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="WindowSprite" Collapsed="true">
-    <Position X="2.75" Y="5.25" Width="1.5" />
+  <Class Name="EcologicEngine::WindowSprite" Collapsed="true">
+    <Position X="6.75" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AFJCGACgAAAAACAgCACAAUBAAYyEQEAIAICyEgAQAQI=</HashCode>
+      <HashCode>AFJCGACgAAAAACAACACAAUBCAYyEQEAIAJCyEgAQAQI=</HashCode>
       <FileName>src\Animation.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Timestamp" Collapsed="true">
-    <Position X="0.75" Y="3.75" Width="1.5" />
+  <Class Name="EcologicEngine::Timestamp" Collapsed="true">
+    <Position X="13.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAAACgAAAAAjAAAAAACAQAAAAAAAAAAAAAgAAAIAAA=</HashCode>
       <FileName>src\Animation.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Projection" Collapsed="true">
-    <Position X="5.25" Y="0.5" Width="1.5" />
+  <Class Name="EcologicEngine::Projection" Collapsed="true">
+    <Position X="13.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAIAAAgAAAAAAAAAAAAAAQAAA=</HashCode>
       <FileName>src\Shape.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="LineSegment" Collapsed="true">
-    <Position X="3.25" Y="0.5" Width="1.5" />
+  <Class Name="EcologicEngine::LineSegment" Collapsed="true">
+    <Position X="17.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAAACAAAAEAAAAAAAEAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>src\Shape.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Shape" Collapsed="true">
-    <Position X="11" Y="0.5" Width="1.5" />
+  <Class Name="EcologicEngine::Shape" Collapsed="true">
+    <Position X="3" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAgAAAAACAAAIAAAAAA=</HashCode>
       <FileName>src\Shape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ray" Collapsed="true">
-    <Position X="11" Y="2.5" Width="1.5" />
+    <Position X="3" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAECAAAACQACAAAAACAAAIAAAgEAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Shape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EllipseShape" Collapsed="true">
-    <Position X="13" Y="1.5" Width="1.5" />
+    <Position X="5.25" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Shape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CircleShape" Collapsed="true">
-    <Position X="13" Y="2.5" Width="1.5" />
+    <Position X="5.25" Y="11.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEAAAQCAGAEAAAAAAAAAAAAAgEAAAACIAAAAAAAAA=</HashCode>
       <FileName>src\Shape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PolygonShape" Collapsed="true">
-    <Position X="9.25" Y="2.5" Width="1.5" />
+    <Position X="0.75" Y="9.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAEABAAAAAAAACAAACAAAACAAgEAAAACAAAAAAAACA=</HashCode>
       <FileName>src\Shape.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Movable" Collapsed="true">
-    <Position X="3" Y="2.5" Width="1.5" />
+  <Class Name="EcologicEngine::Movable" Collapsed="true">
+    <Position X="19" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Sprite.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Sprite" Collapsed="true">
-    <Position X="5.25" Y="3.75" Width="1.5" />
+  <Class Name="EcologicEngine::Sprite" Collapsed="true">
+    <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>SLAAAsAAgKW0EgnACFAAQUADCOQERhwyCkEgQEBgAQY=</HashCode>
+      <HashCode>SLIABsEQgKW0FgnACFAAQUDDCOQERxwyCkEgQEBgAQY=</HashCode>
       <FileName>src\Sprite.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Attribute" Collapsed="true">
-    <Position X="0.75" Y="5.25" Width="1.5" />
+  <Class Name="EcologicEngine::Attribute" Collapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>hUAQCiEBAAiTgAAAoCGEAAABQoOIACAxAgiMgMJEIgA=</HashCode>
+      <HashCode>kUAQCiEBAAiTyAABoCGEAAABQoOIACAxggiMgMJUIgA=</HashCode>
       <FileName>src\Attribute.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BoundingBox" Collapsed="true">
-    <Position X="4.75" Y="5.25" Width="1.5" />
+  <Class Name="EcologicEngine::BoundingBox" Collapsed="true">
+    <Position X="9.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAACAAAEgADAAAAAAIAAAAAiwAAAAEAgAAAAAAAAA=</HashCode>
       <FileName>src\ImpactDetection.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="CollisionBox" Collapsed="true">
-    <Position X="8.25" Y="6.25" Width="1.5" />
+  <Class Name="EcologicEngine::CollisionBox" Collapsed="true">
+    <Position X="6.75" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QCgAAAAAAAAAAAAAAAgAAAAIAAgAAAAEAAAAAAAAAQA=</HashCode>
       <FileName>src\ImpactDetection.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="QuadTreeNode" Collapsed="true">
-    <Position X="4.75" Y="6.5" Width="1.5" />
+  <Class Name="EcologicEngine::QuadTreeNode" Collapsed="true">
+    <Position X="17.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAAAAAAgAABAAABAhAgQAAgAARFBAAlAAAICCAAAAAA=</HashCode>
       <FileName>src\ImpactDetection.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="QuadTree" Collapsed="true">
-    <Position X="4.75" Y="7.5" Width="1.5" />
+  <Class Name="EcologicEngine::QuadTree" Collapsed="true">
+    <Position X="15.5" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAEAAAABAAAAAAIAoAAAAAAAAAAAEAAAAAACAAAA=</HashCode>
       <FileName>src\ImpactDetection.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Message" Collapsed="true">
-    <Position X="8.25" Y="7.5" Width="1.5" />
+  <Class Name="EcologicEngine::Message" Collapsed="true">
+    <Position X="6.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAgAACAAIAAQAAAABAAAgIAAAAAA=</HashCode>
       <FileName>src\CollisionEvent.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="TransmissionEvent" Collapsed="true">
-    <Position X="7.75" Y="10.25" Width="1.5" />
+  <Class Name="EcologicEngine::TransmissionEvent" Collapsed="true">
+    <Position X="4.25" Y="7" Width="1.75" />
     <TypeIdentifier>
       <HashCode>CCAAAAAAAAAAAAAAAAAAAAAEAAwAAAAAEAACADAAAAA=</HashCode>
       <FileName>src\CollisionEvent.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="PatrolEvent" Collapsed="true">
-    <Position X="12" Y="10.25" Width="1.5" />
+  <Class Name="EcologicEngine::PatrolEvent" Collapsed="true">
+    <Position X="9" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAAAAAAAAAAAAAAgAAACAAAAAwAACAAAAIAAAAAAAA=</HashCode>
       <FileName>src\CollisionEvent.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Body" Collapsed="true">
-    <Position X="5.5" Y="10.25" Width="1.5" />
+  <Class Name="EcologicEngine::Body" Collapsed="true">
+    <Position X="2" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAiAAAAABAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <HashCode>AABAAAQAAAAAAiAAAAABAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
       <FileName>src\CollisionEvent.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Fight" Collapsed="true">
-    <Position X="10" Y="10.25" Width="1.5" />
+  <Class Name="EcologicEngine::Fight" Collapsed="true">
+    <Position X="6.75" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQICAAAAAAAAAAAAAQAACAAAAAAAAAAAAA=</HashCode>
       <FileName>src\CollisionEvent.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Item" Collapsed="true">
-    <Position X="14" Y="10.25" Width="1.5" />
+  <Class Name="EcologicEngine::Item" Collapsed="true">
+    <Position X="11.25" Y="7" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAiAAAAAAAAAAEAAQAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\CollisionEvent.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="RenderManager" Collapsed="true">
-    <Position X="1.5" Y="8.5" Width="1.5" />
+  <Class Name="EcologicEngine::RenderManager" Collapsed="true">
+    <Position X="19" Y="2.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAgAAAQAIABAAAAAAAAACAAAABgABBA=</HashCode>
-      <FileName>src\Atlas.h</FileName>
+      <HashCode>AAAAAAAAAAAAAAgQAAQAIABAAAABAAAACAAAABAAABA=</HashCode>
+      <FileName>src\AtlasUtil.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="EventImpactManager" Collapsed="true">
-    <Position X="4.75" Y="8.5" Width="1.5" />
+    <Position X="13.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAEGEAAAAAEAQAAgIAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>src\Atlas.h</FileName>
+      <FileName>src\AtlasUtil.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DropMap" Collapsed="true">
-    <Position X="1.5" Y="7.75" Width="1.5" />
+    <Position X="17.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAABAAAAAAAAAABAABAgAAAACAAAAAAAAAAAgAAA=</HashCode>
-      <FileName>src\Atlas.h</FileName>
+      <FileName>src\AtlasUtil.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DisplayArea" Collapsed="true">
-    <Position X="2.75" Y="10.25" Width="1.5" />
+  <Class Name="EcologicEngine::Biology" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEAoAAAAAAQQACAwAAIAAAAkAgCBAAIADlQgAhQgBAg=</HashCode>
-      <FileName>src\Ecologic.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Biology" Collapsed="true">
-    <Position X="5.5" Y="11.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAQBBiIAACBQABjAChQAQABAC4CJBCKIhiYgAQAEgMA=</HashCode>
+      <HashCode>AAQBhqYAACBQQBjAChQAQABAG4CJhCKIhiYgAQCEgMA=</HashCode>
       <FileName>src\Biology.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="People" Collapsed="true">
-    <Position X="5.5" Y="12.5" Width="1.5" />
+  <Class Name="EcologicEngine::People" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAIAAAAAAgAAAAIAAAAAEAAAAAAQAAAAAAIA=</HashCode>
       <FileName>src\Biology.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Player" Collapsed="true">
-    <Position X="5.5" Y="13.75" Width="1.5" />
+  <Class Name="EcologicEngine::Player" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAgBACCAAgAAACAAQAAAAACCCAAAgAAAAAAAQgAgJA=</HashCode>
+      <HashCode>AIAgBACCAAgAAACAAQAAAAACCCAAAgAABAAAAQgAgJA=</HashCode>
       <FileName>src\Biology.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Ecosystem" Collapsed="true">
-    <Position X="2.75" Y="11.5" Width="1.5" />
+  <Class Name="EcologicEngine::Ecosystem" Collapsed="true">
+    <Position X="19" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAABAAAAAAAAAAAAAAEAAAAgAABABAAAIABAAAAA=</HashCode>
+      <HashCode>AACAAAAAAAAAACAAAAAAAEAEAAiAAAAACAAIAAAAAAA=</HashCode>
       <FileName>src\Ecosystem.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Game" Collapsed="true">
-    <Position X="2.75" Y="14.75" Width="1.5" />
+    <Position X="15.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAQAAAIggBBAAAgCAAAAEEAAAiAQAACAIAAAAAEAAA=</HashCode>
+      <HashCode>AAAQAAAIggBBAAAgCAAAAEEAAAiAQAQCAIEAAAAEAAA=</HashCode>
       <FileName>src\Game.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="Vector&lt;T&gt;" Collapsed="true">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+  <Struct Name="EcologicEngine::Vector&lt;T&gt;" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AEAAAAAAAAAQAAAAgAAIAQgAAgAAAAhAAURgAAACAAA=</HashCode>
+      <HashCode>AEAAAAAAAAAQAAAAkAAIAQgAAgAAAAhAAURgAAACAAA=</HashCode>
       <FileName>src\Shape.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="Velocity" Collapsed="true">
-    <Position X="0.5" Y="2.25" Width="1.5" />
+  <Struct Name="EcologicEngine::Velocity" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>src\Shape.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Struct Name="TranslationVector" Collapsed="true">
-    <Position X="7.25" Y="2.5" Width="1.5" />
+  <Struct Name="EcologicEngine::TranslationVector" Collapsed="true">
+    <Position X="13.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAEAIAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>src\Shape.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Interface Name="Clickable" Collapsed="true">
-    <Position X="5.25" Y="2.5" Width="1.5" />
+  <Interface Name="EcologicEngine::Clickable" Collapsed="true">
+    <Position X="13.75" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
       <FileName>src\Sprite.h</FileName>

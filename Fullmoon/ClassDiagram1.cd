@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EcologicEngine::Movable" Collapsed="true">
+    <Position X="19" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Sprite.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Sprite" Collapsed="true">
+    <Position X="8.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SLIABsEQgKW0FgnACFAAQUDDCOQERxwyCkEgQEBgAQY=</HashCode>
+      <FileName>src\Sprite.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::BoundingBox" Collapsed="true">
+    <Position X="11.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAACAAAEgADAAAAAAIAAAAAiwAAAAEAgAAAAAAAAA=</HashCode>
+      <FileName>src\ImpactDetection.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::CollisionBox" Collapsed="true">
+    <Position X="8.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCgAAAAAAAAAAAAAAAgAAAAIAAgAAAAEAAAAAAAAAQA=</HashCode>
+      <FileName>src\ImpactDetection.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::QuadTreeNode" Collapsed="true">
+    <Position X="22.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAgAABAAABAhAgQAAgAARFBAAlAAAICCAAAAAA=</HashCode>
+      <FileName>src\ImpactDetection.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::QuadTree" Collapsed="true">
+    <Position X="20.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAEAAAABAAAAAAIAoAAAAAAAAAAAEAAAAAACAAAA=</HashCode>
+      <FileName>src\ImpactDetection.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::RenderManager" Collapsed="true">
+    <Position X="3.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgQAAQAIABAAAABAAAACAAAABAAABA=</HashCode>
+      <FileName>src\AtlasUtil.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Attribute" Collapsed="true">
+    <Position X="19" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kUAQCiEBAAiTyAABoCGEAAABQoOIACAxggiMgMJUIgA=</HashCode>
+      <FileName>src\Attribute.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Player" Collapsed="true">
+    <Position X="16.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAgBACCAAgAAACAAQAAAAACCCAAAgAABAAAAQgAgJA=</HashCode>
+      <FileName>src\Biology.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Biology" Collapsed="true">
+    <Position X="13.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBhqYAACBQQBjAChQAQABAG4CJhCKIhiYgAQCEgMA=</HashCode>
+      <FileName>src\Biology.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::People" Collapsed="true">
+    <Position X="16.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAIAAAAAAgAAAAIAAAAAEAAAAAAQAAAAAAIA=</HashCode>
+      <FileName>src\Biology.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Monster" Collapsed="true">
+    <Position X="14.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABQAAAAAAAAAAAAAEAAAAAAAAAAAAAgAAAAAAAIA=</HashCode>
+      <FileName>src\Biology.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Message" Collapsed="true">
+    <Position X="8.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAgAACAAIAAQAAAABAAAgIAAAAAA=</HashCode>
+      <FileName>src\CollisionEvent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::TransmissionEvent" Collapsed="true">
+    <Position X="8" Y="10.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CCAAAAAAAAAAAAAAAAAAAAAEAAwAAAAAEAACADAAAAA=</HashCode>
+      <FileName>src\CollisionEvent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::PatrolEvent" Collapsed="true">
+    <Position X="10.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAgAAACAAAAAwAACAAAAIAAAAAAAA=</HashCode>
+      <FileName>src\CollisionEvent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Body" Collapsed="true">
+    <Position X="12.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAQAAAAAAiAAAAABAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>src\CollisionEvent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Fight" Collapsed="true">
+    <Position X="3.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQICAAAAAAAAAAAAAQAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\CollisionEvent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Item" Collapsed="true">
+    <Position X="5.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAiAAAAAAAAAAEAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\CollisionEvent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Atlas" Collapsed="true">
+    <Position X="3.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEBiAoIAAEAAgAAwAAIBAAAgCgCBQIIABlQgghRgBAg=</HashCode>
+      <FileName>src\Atlas.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EcologicEngine::Ecosystem" Collapsed="true">
+    <Position X="22.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAACAAAAAAAEAEAAiAAAAACAAIAAAAAAA=</HashCode>
+      <FileName>src\Ecosystem.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EventImpactManager" Collapsed="true">
+    <Position X="6.75" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ACAEGEAAAAAEAQAAgIAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\AtlasUtil.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DropMap" Collapsed="true">
+    <Position X="20.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAABAABAgAAAACAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>src\AtlasUtil.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Typedef Name="EcologicEngine::BioPointer" Collapsed="true">
+    <Position X="13" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Biology.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Interface Name="EcologicEngine::Clickable" Collapsed="true">
+    <Position X="19" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>src\Sprite.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

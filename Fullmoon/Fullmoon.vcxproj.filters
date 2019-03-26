@@ -166,6 +166,7 @@
     <None Include="ClassDiagram.cd">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Icon.ico">
