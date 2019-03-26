@@ -259,3 +259,11 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# 不上传资源文件
+*.png
+*.jpg
+*.gif
+*.mid
+*.lnk
+*.mp3
