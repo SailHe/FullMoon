@@ -140,6 +140,7 @@ namespace EcologicEngine {
 			return true;
 		}
 
+		// 计算并返回显示位置(绝对位置)
 		static GP Point &calcDisplayLocation(GP Point &currentBodyLocation) {
 			GP Point currentCameraLocation = RenderManager::cameraArea.getLocation();
 			static GP Point currentDisplayLocation = RenderManager::displayArea.getLocation();

@@ -30,7 +30,7 @@ namespace EcologicEngine {
 			}
 			// 生物数为size
 			// 创建的生物群
-			createColony(0);
+			createColony(5);
 			//创建玩家
 			if (player == nullptr) {
 				player.reset(new Player(ecoregions[ecoregionsIndex]));

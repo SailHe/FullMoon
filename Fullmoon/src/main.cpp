@@ -134,7 +134,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam){
 						  //make_shared<Game>()// unique_ptr<>;
 						  //返回hWnd参数所指定的窗口的设备环境。: GetWindowDC(); 
 						  //用于获得hWnd参数所指定窗口的客户区域的一个设备环境。: GetDC(hWnd) //重绘时会闪烁
-						  //game = shared_ptr<Game>(new Game(GetDC(hWnd), GP Size(winRect.Width, winRect.Height)));
+						  //game = std::shared_ptr<Game>(new Game(GetDC(hWnd), GP Size(winRect.Width, winRect.Height)));
 						  game = std::shared_ptr<Game>(new Game(GetDC(hWnd), GP Size(16 * 90, 9 * 90)));
 						  isInitialization = true;
 					  }
