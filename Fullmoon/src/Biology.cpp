@@ -257,7 +257,7 @@ namespace EcologicEngine {
 	void Player::opKeyboard() {
 		static ArrayList<char> cmd;
 		//AGI;//对象的基本位移
-		static int d = 8;
+		static int d = 8*2;
 		//斜向移动时1单位的比例系数 即要想在斜向移动等同于x=y的距离那么 原x=y将变为->coefficient*x=coefficient*y
 		static const double coefficient = sqrt(2) / 2;
 		int dx = getBody().getDx(), dy = getBody().getDy();//分位移
